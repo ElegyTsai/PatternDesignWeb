@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.List;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -107,4 +108,14 @@ public class MybatisTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void test5(){
+        User user1= userMapper.selectUserById(1);
+        System.out.println("name:"+user1.getUsername());
+
+        List<User> userList = userMapper.selectAllUser();
+        System.out.println(userList.size());
+    }
 }
+

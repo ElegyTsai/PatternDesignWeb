@@ -35,6 +35,10 @@ public class User implements UserDetails {
     private String createTime;
     private String lastModify;
 
+    @Override
+    public String toString(){
+        return "username:"+this.username+"  password:"+this.getPassword();
+    }
     //实现接口
     @Override
     public String getUsername(){ return this.username;}
@@ -52,7 +56,7 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities(){
         List<GrantedAuthority> authorities = new ArrayList<>();
-        List<UserRole> roles = this.getMyRoles();
+        List<UserRole> roles = this.getRoles();
         System.out.println("finding roles: "+roles);
         for(UserRole role : roles){
             authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
@@ -93,10 +97,11 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public String getRoles() throws Exception{
-        return SerializableUtil.serializeToString(this.roles);
-    }
-    public List<UserRole> getMyRoles(){
+//    public String getRoles() throws Exception{
+//        //return SerializableUtil.serializeToString(this.roles);
+//        return this.roles;
+//    }
+    public List<UserRole> getRoles(){
         return this.roles;
     }
     public void setRoles(List<UserRole> roles) {
