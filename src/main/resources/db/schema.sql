@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS `user`(
+    `id` INT(20) NOT NULL AUTO_INCREMENT,
+    `username` VARCHAR(255) DEFAULT NULL,
+    `email` VARCHAR(255) DEFAULT NULL,
+    `password` VARCHAR(255) DEFAULT NULL,
+    `mobile` VARCHAR(255) DEFAULT NULL ,
+    `Enabled` VARCHAR(10) DEFAULT NUll ,
+    `createTime` VARCHAR(255) DEFAULT NULL ,
+    `lastModify` VARCHAR (255) DEFAULT NULL ,
+    `role` TEXT DEFAULT NULL,
+
+    PRIMARY KEY (`id`)
+)ENGINE = InnoDB DEFAULT CHARSET=utf8;
