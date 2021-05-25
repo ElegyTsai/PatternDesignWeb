@@ -3,10 +3,28 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.patterndesignserver.mapper.member.UserMapper">
+    <resultMap type="com.project.patterndesignserver.model.member.User" id="userAndRole">
+        <id property="id" column="id" />
+        <result property="username" column="username" />
+        <result property="password" column="password" />
+        <result property="mobile"   column="mobile" />
+        <result property="email" column="email" />
+        <result property="enabled" column="enabled" />
+
+        <!-- 一对多级联查询，ofType表示集合中的元素类型，将uid传递给selectOrdersByld -->
+        <collection property="roles" ofType="com.project.patterndesignserver.model.member.UserRole">
+            <id property="id" column="roleid"/>
+            <result property="roleName" column="rolename"/>
+            <result property="description" column="description"/>
+            <result property="available" column="description"/>
+        </collection>
+    </resultMap>
     <!-- 根据uid查询一个用户信息 -->
     <select id="selectUserById" parameterType="Integer"
-            resultType="com.project.patterndesignserver.model.member.User">
-        select * from user where id = #{id}
+            resultMap="userAndRole">
+            select user.*,sysuser.sysusername ,role.id as roleid,role.description,role.rolename,role.available
+            from user,sysuser,role
+            where user.id=sysuser.user_id AND role.sysuser_id=sysuser.id AND user.id = #{id};
     </select>
     <!-- 查询所有用户信息 -->
     <select id="selectAllUser" resultType="com.project.patterndesignserver.model.member.User">

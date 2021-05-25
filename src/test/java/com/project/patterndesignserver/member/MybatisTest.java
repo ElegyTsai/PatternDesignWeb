@@ -30,11 +30,10 @@ public class MybatisTest {
 
         User user1 = new User();
         user1.setCreateTime("now");
-        user1.setEmail("123@qq.com");
-        user1.setMobile("110");
-        user1.setPassword("password123");
-        user1.setUsername("me");
-        user1.setId(1);
+        user1.setEmail("1234@qq.com");
+        user1.setMobile("1101");
+        user1.setPassword("password1235");
+        user1.setUsername("caiwei");
         user1.setLastModify("now");
         userMapper.add(user1);
     }
@@ -116,6 +115,12 @@ public class MybatisTest {
 
         List<User> userList = userMapper.selectAllUser();
         System.out.println(userList.size());
+    }
+
+    @Test
+    public void test6(){
+        User user1=userMapper.selectUserById(1);
+        System.out.println(user1.getRoles().size());
     }
 }
 
