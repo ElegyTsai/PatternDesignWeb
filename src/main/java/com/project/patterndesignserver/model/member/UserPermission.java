@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 public class UserPermission implements Serializable {
     //primary key
-    private Integer id;
+    private long id;
     private String name;
 
     private String resourceType;
@@ -18,7 +18,11 @@ public class UserPermission implements Serializable {
     private Boolean available = Boolean.FALSE;
     private List permissions;
     private List<UserRole> roles;
-
+    public UserPermission(){
+    }
+    public UserPermission(long id){
+        this.id = id;
+    }
     public List getPermissions(){
         return Arrays.asList(this.permission.trim().split("|"));
     }

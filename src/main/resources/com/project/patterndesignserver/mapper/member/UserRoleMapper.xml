@@ -50,9 +50,18 @@
         where sysuser.role_id = #{id};
     </select>
     <!--     添加一个role-->
-    <insert id="addUserRole" parameterType="com.project.patterndesignserver.model.member.UserRole">
+    <insert id="addUserRole" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.project.patterndesignserver.model.member.UserRole">
         INSERT INTO role(description,rolename,available)
         VALUES(#{description},#{roleName},#{available})
+    </insert>
+
+    <!--   保存关系-->
+    <insert id="savePermissions" parameterType="com.project.patterndesignserver.model.member.UserRole">
+        INSERT INTO sysrole(roleper_id,permission_id)
+        VALUES
+        <foreach collection="permissions" item="permission" separator="," >
+            (#{id},#{permission.id})
+        </foreach>
     </insert>
 
     <!-- 更新role -->

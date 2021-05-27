@@ -26,6 +26,8 @@ public interface UserMapper {
 
     int addUser(User user);
 
+    int saveRole(User user);
+
     int updateUser(User user);
 
     int deleteUser(long id);

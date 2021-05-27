@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `user`(
 CREATE TABLE IF NOT EXISTS `role`(
     `id` INT(20) NOT NULL AUTO_INCREMENT,
     `description` VARCHAR(255) DEFAULT NULL,
-    `rolename` VARCHAR(10) DEFAULT NUll ,
+    `rolename` VARCHAR(30) DEFAULT NUll ,
     `available` INT(1) DEFAULT NULL,
     PRIMARY KEY (`id`)
     )ENGINE = InnoDB DEFAULT CHARSET=utf8;
@@ -30,7 +30,6 @@ CREATE TABLE IF NOT EXISTS `permission`(
 
 CREATE TABLE IF NOT EXISTS `sysuser`(
     `id` INT(20) NOT NULL AUTO_INCREMENT,
-    `sysusername` VARCHAR(255) DEFAULT NULL,
     `enabled` TINYINT(1) DEFAULT NUll ,
     `user_id` INT(20) DEFAULT NULL,
     `role_id` INT(20) DEFAULT NULL,
@@ -43,7 +42,6 @@ CREATE TABLE IF NOT EXISTS `sysuser`(
 
 CREATE TABLE IF NOT EXISTS `sysrole`(
     `id` INT(20) NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(10) DEFAULT NUll ,
     `roleper_id` INT(20) DEFAULT NULL,
     `permission_id` INT(20) DEFAULT NULL,
     KEY `roleper_id` (`roleper_id`),
