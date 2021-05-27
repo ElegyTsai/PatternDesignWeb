@@ -34,15 +34,30 @@
     </select>
 
     <!-- 添加一个用户 -->
-    <insert id="addUser" parameterType="com.project.patterndesignserver.model.member.User">
+    <insert id="addUser" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.project.patterndesignserver.model.member.User">
         INSERT INTO user(username,email,password,mobile,enabled,createTime,lastModify)
             VALUES(#{username},#{email},#{password},#{mobile},#{enabled},#{createTime},#{lastModify})
+    </insert>
+
+    <!-- 保存用户角色 -->
+    <insert id="saveRole"  parameterType="com.project.patterndesignserver.model.member.User">
+        INSERT INTO sysuser(user_id,role_id)
+        VALUES
+        <foreach collection="roles" item="role" separator=",">
+            (#{id},#{role.id})
+        </foreach>
     </insert>
     <!--修改一个用户 -->
     <update id="updateUser" parameterType="com.project.patterndesignserver.model.member.User">
         update user set username =
                             #{username},password = #{password},mobile=#{mobile},enable=#{enabled} where id = #{id}
     </update>
+
+    <!-- 删除一个用户角色对用 -->
+    <delete id="deleteRoleRelation" parameterType="Long">
+        delete from sysrole where role_id
+                                   = #{id}
+    </delete>
     <!-- 删除一个用户 -->
     <delete id="deleteUser" parameterType="Long">
         delete from user where id

@@ -20,6 +20,8 @@ public interface UserRoleMapper {
 
     int addUserRole(UserRole userRole);
 
+    int savePermissions(UserRole userRole);
+
     int updateUserRole(UserRole userRole);
 
     int deleteUserRole(long id);
