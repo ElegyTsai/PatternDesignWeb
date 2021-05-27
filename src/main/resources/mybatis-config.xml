@@ -23,6 +23,6 @@
     </environments>
     <!-- 将mapper文件加入到配置文件中 -->
     <mappers>
-        <mapper resource="mapperbyxml/UserMapper.xml" />
+        <mapper resource="com/project/patterndesignserver/mapper/member/UserMapper.xml" />
     </mappers>
 </configuration>
