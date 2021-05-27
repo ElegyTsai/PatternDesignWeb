@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.patterndesignserver.mapper.member.SysRoleMapper">
+    <!-- 用角色ID和权限id查询sysrole -->
+    <select id="selectSysRoleById" parameterType="com.project.patterndesignserver.model.member.SysRole"
+            resultType="com.project.patterndesignserver.model.member.SysRole">
+        select permission.id
+        from sysrole
+        where sysrole.roleper_id = #{roleper_id} and sysrole.permission_id = #{permission_id};
+    </select>
+    <!-- 用角色ID查询角色的所有sysrole -->
+    <select id="selectSysRoleByRoleId" parameterType="Long"
+            resultType="com.project.patterndesignserver.model.member.SysRole">
+        select *
+        from sysrole
+        where sysrole.roleper_id=#{roleId};
+    </select>
+    <!-- 用权限ID查询所有的sysrole -->
+    <select id="selectSysRoleByPermissionId" parameterType="Long"
+            resultType="com.project.patterndesignserver.model.member.SysRole">
+        select *
+        from sysrole
+        where sysrole.permission_id = #{permissionId};
+    </select>
+
+    <!--     添加一个sysrole-->
+    <insert id="addSysRole" parameterType="com.project.patterndesignserver.model.member.SysRole">
+        INSERT INTO sysrole(roleper_id,permission_id,name)
+        VALUES(#{roleper_id},#{permission_id},#{name})
+    </insert>
+
+    <!-- 删除一个sysuser -->
+    <delete id="deleteSysRole" parameterType="Long">
+        delete from sysrole where sysrole.id=#{id}
+    </delete>
+
+</mapper>

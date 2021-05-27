@@ -11,7 +11,10 @@ public class UserRole {
     private String roleName;
 
     private String description;
-    private Boolean available = Boolean.FALSE;
+    private boolean available = true;
 
     private List<UserPermission> permissions;
+    private List<User> users;
+
+
 }

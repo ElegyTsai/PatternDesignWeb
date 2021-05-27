@@ -21,7 +21,7 @@ public class User implements UserDetails {
     private String password;
 
     //用户状态
-    private String enabled;
+    private boolean enabled;
 
     //用户角色权限相关
     /*
@@ -51,7 +51,7 @@ public class User implements UserDetails {
     @Override
     public boolean isCredentialsNonExpired(){ return true;}
     @Override
-    public boolean isEnabled(){ return true;}
+    public boolean isEnabled(){ return this.enabled;}
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities(){

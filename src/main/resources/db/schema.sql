@@ -10,33 +10,11 @@ CREATE TABLE IF NOT EXISTS `user`(
     PRIMARY KEY (`id`)
 )ENGINE = InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `sysuser`(
-    `id` INT(20) NOT NULL AUTO_INCREMENT,
-    `sysusername` VARCHAR(255) DEFAULT NULL,
-    `Enabled` TINYINT(1) DEFAULT NUll ,
-    `user_id` INT(20) DEFAULT NULL,
-    PRIMARY KEY (`id`),
-    KEY `user_id` (`user_id`),
-    CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-)ENGINE = InnoDB DEFAULT CHARSET=utf8;
-
 CREATE TABLE IF NOT EXISTS `role`(
     `id` INT(20) NOT NULL AUTO_INCREMENT,
     `description` VARCHAR(255) DEFAULT NULL,
     `rolename` VARCHAR(10) DEFAULT NUll ,
-    `available` VARCHAR(10) DEFAULT NULL,
-    `sysuser_id` INT(20) DEFAULT NULL,
-    PRIMARY KEY (`id`),
-    KEY `sysuser_id` (`sysuser_id`),
-    CONSTRAINT `sysuser_id` FOREIGN KEY (`sysuser_id`) REFERENCES `sysuser` (`id`)
-)ENGINE = InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `sysrole`(
-    `id` INT(20) NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(10) DEFAULT NUll ,
-    `role_id` INT(20) DEFAULT NULL,
-    KEY `role_id` (`role_id`),
-    CONSTRAINT `role_id` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
+    `available` INT(1) DEFAULT NULL,
     PRIMARY KEY (`id`)
     )ENGINE = InnoDB DEFAULT CHARSET=utf8;
 
@@ -47,8 +25,31 @@ CREATE TABLE IF NOT EXISTS `permission`(
     `url` VARCHAR(255) DEFAULT NULL,
     `available` INT(1) DEFAULT NULL,
     `permission` VARCHAR(255) DEFAULT NULL,
-    `sysrole_id` INT(20) DEFAULT NULL,
-    KEY `sysrole_id` (`sysrole_id`),
-    CONSTRAINT `sysrole_id` FOREIGN KEY (`sysrole_id`) REFERENCES `sysrole` (`id`),
+    PRIMARY KEY (`id`)
+    )ENGINE = InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `sysuser`(
+    `id` INT(20) NOT NULL AUTO_INCREMENT,
+    `sysusername` VARCHAR(255) DEFAULT NULL,
+    `enabled` TINYINT(1) DEFAULT NUll ,
+    `user_id` INT(20) DEFAULT NULL,
+    `role_id` INT(20) DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    KEY `user_id` (`user_id`),
+    CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+    KEY `role_id` (`role_id`),
+    CONSTRAINT `role_id` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
+)ENGINE = InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `sysrole`(
+    `id` INT(20) NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(10) DEFAULT NUll ,
+    `roleper_id` INT(20) DEFAULT NULL,
+    `permission_id` INT(20) DEFAULT NULL,
+    KEY `roleper_id` (`roleper_id`),
+    CONSTRAINT `roleper_id` FOREIGN KEY (`roleper_id`) REFERENCES `role` (`id`),
+    KEY `permission_id` (`permission_id`),
+    CONSTRAINT `permission_id` FOREIGN KEY (`permission_id`) REFERENCES `permission` (`id`),
     PRIMARY KEY (`id`)
 )ENGINE = InnoDB DEFAULT CHARSET=utf8;
+

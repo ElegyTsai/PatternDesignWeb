@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.patterndesignserver.mapper.member.UserRoleMapper">
+    <resultMap type="com.project.patterndesignserver.model.member.UserRole" id="RoleAndPermission">
+        <id property="id" column="id" />
+        <result property="roleName" column="rolename" />
+        <result property="description" column="description" />
+        <result property="available"   column="available" />
+        <!-- 一对多级联查询，ofType表示集合中的元素类型，将uid传递给selectOrdersByld -->
+        <collection property="permissions" ofType="com.project.patterndesignserver.model.member.UserPermission">
+            <id property="id" column="permissionid"/>
+            <result property="name" column="permissionname"/>
+            <result property="resourceType" column="resourceType"/>
+            <result property="available" column="permissionavailable"/>
+            <result property="url" column="url"/>
+            <result property="permission" column="permission"/>
+        </collection>
+    </resultMap>
+    <!-- 用角色id查询角色包括了permission -->
+    <select id="selectUserRoleById" parameterType="Long"
+            resultMap="RoleAndPermission">
+        select role.*,
+        permission.id as permissionid,permission.name as permissionname,permission.resourceType,permission.available as permissionable,permission.url,permission.permission
+        from role left join sysrole on role.id=sysrole.roleper_id left join permission on sysrole.permission_id= permission.id
+        where  role.id =#{id}
+    </select>
+    <!-- 用角色id查询所有拥有此角色的用户 -->
+    <select id="queryUserByRoleId" parameterType="Long"
+            resultType="com.project.patterndesignserver.model.member.User">
+        select user.*
+        from user,sysuser,role
+        where role.id=sysuser.role_id AND sysuser.user_id=user.id AND role.id = #{roleId}
+    </select>
+
+    <!-- 用角色id查询此角色拥有的所有权限 -->
+    <select id="queryPermissionByRoleId" parameterType="Long"
+            resultType="com.project.patterndesignserver.model.member.UserPermission">
+        select permission.*
+        from role,sysrole,permission
+        where role.id=sysrole.roleper_id AND sysrole.permission_id=permission.id AND role.id = #{roleId}
+    </select>
+
+    <!-- 用角色ID查询角色的所有用户 -->
+    <select id="selectAllSysUserByRoleId" parameterType="Long"
+            resultType="com.project.patterndesignserver.model.member.SysUser">
+        select sysuser.id,sysuser.user_id,syuser.role_id,syuser.enabled
+        from sysuser
+        where sysuser.role_id = #{id};
+    </select>
+    <!--     添加一个role-->
+    <insert id="addUserRole" parameterType="com.project.patterndesignserver.model.member.UserRole">
+        INSERT INTO role(description,rolename,available)
+        VALUES(#{description},#{roleName},#{available})
+    </insert>
+
+    <!-- 更新role -->
+    <update id="updateUserRole" parameterType="com.project.patterndesignserver.model.member.UserRole">
+        UPDATE role SET description =#{description},rolename=#{roleName},available=#{available} where id=#{id}
+    </update>
+    <!-- 删除一个role -->
+    <delete id="deleteUserRole" parameterType="Long">
+        delete from role where id=#{id}
+    </delete>
+</mapper>

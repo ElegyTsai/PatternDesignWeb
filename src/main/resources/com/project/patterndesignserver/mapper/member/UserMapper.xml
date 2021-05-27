@@ -10,35 +10,38 @@
         <result property="mobile"   column="mobile" />
         <result property="email" column="email" />
         <result property="enabled" column="enabled" />
-
         <!-- 一对多级联查询，ofType表示集合中的元素类型，将uid传递给selectOrdersByld -->
         <collection property="roles" ofType="com.project.patterndesignserver.model.member.UserRole">
             <id property="id" column="roleid"/>
             <result property="roleName" column="rolename"/>
             <result property="description" column="description"/>
-            <result property="available" column="description"/>
+            <result property="available" column="available"/>
         </collection>
     </resultMap>
-    <!-- 根据uid查询一个用户信息 -->
-    <select id="selectUserById" parameterType="Integer"
+    <!-- 根据id查询一个用户信息 -->
+    <select id="selectUserById" parameterType="Long"
             resultMap="userAndRole">
-            select user.*,sysuser.sysusername ,role.id as roleid,role.description,role.rolename,role.available
-            from user,sysuser,role
-            where user.id=sysuser.user_id AND role.sysuser_id=sysuser.id AND user.id = #{id};
+            select user.*,
+                   role.id as roleid,role.description, role.rolename, role.available
+            from user left join sysuser on user.id=sysuser.user_id left join role on role.id=sysuser.role_id
+            where user.id = #{id};
     </select>
     <!-- 查询所有用户信息 -->
-    <select id="selectAllUser" resultType="com.project.patterndesignserver.model.member.User">
-        select * from user
+    <select id="selectAllUser" resultMap="userAndRole">
+        select user.*,role.id as roleid,role.description, role.rolename, role.available
+        from user,role,sysuser
+        where user.id=sysuser.user_id AND role.id=sysuser.role_id;
     </select>
-    <!-- 添加一个用户，#{uname}为 com.mybatis.po.MyUser 的属性值 -->
+
+    <!-- 添加一个用户 -->
     <insert id="addUser" parameterType="com.project.patterndesignserver.model.member.User">
-        INSERT INTO user(id,username,email,password,mobile,enabled,createTime,lastModify)
-            VALUES(#{id},#{username},#{email},#{password},#{mobile},#{enabled},#{createTime},#{lastModify})
+        INSERT INTO user(username,email,password,mobile,enabled,createTime,lastModify)
+            VALUES(#{username},#{email},#{password},#{mobile},#{enabled},#{createTime},#{lastModify})
     </insert>
     <!--修改一个用户 -->
     <update id="updateUser" parameterType="com.project.patterndesignserver.model.member.User">
         update user set username =
-                            #{username},password = #{password} where id = #{id}
+                            #{username},password = #{password},mobile=#{mobile},enable=#{enabled} where id = #{id}
     </update>
     <!-- 删除一个用户 -->
     <delete id="deleteUser" parameterType="Long">

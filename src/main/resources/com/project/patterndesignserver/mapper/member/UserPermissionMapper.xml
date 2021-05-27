@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.patterndesignserver.mapper.member.UserPermissionMapper">
+
+    <!-- 根据id查找一个permission -->
+    <select id="selectPermissionById" parameterType="Long"
+            resultType="com.project.patterndesignserver.model.member.UserPermission">
+        select *
+        from permission
+        where id=#{id};
+    </select>
+
+    <!--     添加一个permission-->
+    <insert id="addPermission" parameterType="com.project.patterndesignserver.model.member.UserPermission">
+        INSERT INTO permission(name,resourceType,url,permission,available)
+        VALUES(#{name},#{resourceType},#{url},#{permission},#{available})
+    </insert>
+
+    <!--     更新一个permission-->
+    <update id="updatePermission" parameterType="com.project.patterndesignserver.model.member.UserPermission">
+        UPDATE permission SET name=#{name},resourceType=#{resourceType},url=#{url},permission=#{permission},available=#{available}
+        where id=#{id}
+    </update>
+
+    <!-- 删除一个sysuser -->
+    <delete id="deletePermissionById" parameterType="Long">
+#         delete from sysrole
+#         where sysrole.permission_id=#{id};
+        delete from permission
+        where permission.id=#{id};
+    </delete>
+</mapper>

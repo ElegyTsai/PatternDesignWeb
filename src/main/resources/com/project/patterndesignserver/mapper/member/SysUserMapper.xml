@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.patterndesignserver.mapper.member.SysUserMapper">
+<!--    <resultMap type="com.project.patterndesignserver.model.member.SysUser" id="Suser">-->
+<!--        <id property="id" column="id" />-->
+<!--        <result property="enabled" column="enabled" />-->
+<!--        <result property="sysusername" column="sysusername" />-->
+<!--&lt;!&ndash;        <association property="user_id" javaType="Long" column="user_id"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        <association property="role_id" javaType="Long" column="role_id" />&ndash;&gt;-->
+<!--    </resultMap>-->
+    <!-- 根据用户id和角色id查询一个关系 -->
+    <select id="selectSysUserById" parameterType="com.project.patterndesignserver.model.member.SysUser"
+            resultType="com.project.patterndesignserver.model.member.SysUser">
+        select *
+        from sysuser
+        where sysuser.user_id = #{user_id} and sysuser.role_id = #{role_id};
+    </select>
+    <!-- 用用户ID查询用户的所有角色 -->
+    <select id="selectAllSysUserByUserId" parameterType="Long"
+            resultType="com.project.patterndesignserver.model.member.SysUser">
+        select sysuser.id,sysuser.user_id,syuser.role_id,syuser.enabled
+        from sysuser
+        where sysuser.user_id = #{id};
+    </select>
+    <!-- 用角色ID查询角色的所有用户 -->
+    <select id="selectAllSysUserByRoleId" parameterType="Long"
+            resultType="com.project.patterndesignserver.model.member.SysUser">
+        select sysuser.id,sysuser.user_id,syuser.role_id,syuser.enabled
+        from sysuser
+        where sysuser.role_id = #{id};
+    </select>
+<!--     添加一个sysuser-->
+    <insert id="addSysUser" parameterType="com.project.patterndesignserver.model.member.SysUser">
+        INSERT INTO sysuser(user_id,role_id,enabled)
+        VALUES(#{user_id},#{role_id},#{enabled})
+    </insert>
+
+    <!-- 删除一个sysuser -->
+    <delete id="deleteSysUser" parameterType="com.project.patterndesignserver.model.member.SysUser">
+        delete from sysuser where (role_id=#{role_id} AND user_id = #{user_id})
+    </delete>
+</mapper>
