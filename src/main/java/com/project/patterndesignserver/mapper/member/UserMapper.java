@@ -22,6 +22,12 @@ public interface UserMapper {
 
     User selectUserById(long id);
 
+    User selectUserByEmail(String email);
+
+    User selectUserByMobile(String mobile);
+
+    User selectUserByUsername(String username);
+
     List<User> selectAllUser();
 
     int addUser(User user);
@@ -30,7 +36,11 @@ public interface UserMapper {
 
     int updateUser(User user);
 
+    int deleteRoleRelation(long id);
+
     int deleteUser(long id);
+
+
 
 
 }

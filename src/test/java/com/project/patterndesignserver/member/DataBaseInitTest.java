@@ -99,12 +99,12 @@ public class DataBaseInitTest {
     public void UserInitTest1(){
 
         User user1 = new User();
-        user1.setCreateTime("now");
+//        user1.setCreateTime("now");
         user1.setEmail("1234@qq.com");
         user1.setMobile("11011");
         user1.setPassword("password124577");
         user1.setUsername("caiwei1");
-        user1.setLastModify("now");
+//        user1.setLastModify("now");
         List<UserRole> roles = new ArrayList<>();
         roles.add(new UserRole(3));
         user1.setRoles(roles);
@@ -116,12 +116,12 @@ public class DataBaseInitTest {
     public void UserInitTest2(){
 
         User user1 = new User();
-        user1.setCreateTime("now2");
+//        user1.setCreateTime("now2");
         user1.setEmail("12345@qq.com");
         user1.setMobile("11111");
         user1.setPassword("password577");
         user1.setUsername("caiwei_admin");
-        user1.setLastModify("now2");
+//        user1.setLastModify("now2");
         List<UserRole> roles = new ArrayList<>();
         roles.add(new UserRole(3));
         roles.add(new UserRole(5));
@@ -129,5 +129,13 @@ public class DataBaseInitTest {
         user1.setRoles(roles);
         userMapper.addUser(user1);
         userMapper.saveRole(user1);
+    }
+    @Test
+    public void UserDeleteTest2(){
+
+//        User user1 = userMapper.selectUserByEmail("1234@qq.com");
+        userMapper.deleteRoleRelation(3);
+        userMapper.deleteUser(3);
+
     }
 }
