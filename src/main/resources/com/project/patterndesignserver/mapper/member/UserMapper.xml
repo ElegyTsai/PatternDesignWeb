@@ -10,6 +10,7 @@
         <result property="mobile"   column="mobile" />
         <result property="email" column="email" />
         <result property="enabled" column="enabled" />
+        <result property="outDate" column="outDate"/>
         <result property="active" column="active"/>
         <result property="createTime" column="createTime"/>
         <result property="lastModify" column="lastModify"/>
@@ -85,6 +86,23 @@
                             #{username},password = #{password},mobile=#{mobile},enable=#{enabled} where id = #{id}
     </update>
 
+    <!--修改一个用户的validationCode 和date -->
+    <update id="setValidationAndOutDateByEmail">
+        update user set validationCode =
+                            #{validationCode},outDate = #{outDate} where email = #{email};
+    </update>
+
+    <!--激活用户 -->
+    <update id="setActiveByEmail">
+        update user set active =
+                            #{active} where email = #{email};
+    </update>
+
+    <!--激活用户 -->
+    <update id="clearOutDateAndValidationCode">
+        update user set outDate = null, validationCode = null
+                             where id = #{id};
+    </update>
     <!-- 删除一个用户角色对应 -->
     <delete id="deleteRoleRelation" parameterType="Long">
         delete from sysuser where user_id
@@ -95,4 +113,5 @@
         delete from user where id
                                    = #{id}
     </delete>
+
 </mapper>

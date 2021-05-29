@@ -276,5 +276,10 @@ public class MybatisTest {
         userRole.setDescription("level 3 for test25");
         userRoleMapper.updateUserRole(userRole);
     }
+
+    @Test
+    public void test26(){
+        userMapper.setValidationAndOutDateByEmail("123","111111","123@qq.com");
+    }
 }
 

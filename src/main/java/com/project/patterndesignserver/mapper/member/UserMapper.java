@@ -40,6 +40,12 @@ public interface UserMapper {
 
     int deleteUser(long id);
 
+    int setValidationAndOutDateByEmail(String validationCode,String outDate,String email);
+
+    int setActiveByEmail(boolean active,String email);
+
+    int clearOutDateAndValidationCode(long id);
+
 
 
 
