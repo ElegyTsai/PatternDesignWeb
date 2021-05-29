@@ -37,12 +37,12 @@ public class MybatisTest {
     public void test1(){
 
         User user1 = new User();
-        user1.setCreateTime("now7");
+//        user1.setCreateTime("now7");
         user1.setEmail("1234@qq.com");
         user1.setMobile("11011");
         user1.setPassword("password124577");
         user1.setUsername("weiwwww");
-        user1.setLastModify("now7");
+//        user1.setLastModify("now7");
         userMapper.addUser(user1);
     }
     @Test
@@ -145,8 +145,8 @@ public class MybatisTest {
         user1.setMobile("1102");
         user1.setPassword("password1245");
         user1.setUsername("wei2");
-        user1.setLastModify("now3");
-        user1.setCreateTime("now3");
+//        user1.setLastModify("now3");
+//        user1.setCreateTime("now3");
         userMapper.addUser(user1);
     }
     @Test
@@ -275,6 +275,11 @@ public class MybatisTest {
 //        System.out.println(userRole.getPermissions());
         userRole.setDescription("level 3 for test25");
         userRoleMapper.updateUserRole(userRole);
+    }
+
+    @Test
+    public void test26(){
+        userMapper.setValidationAndOutDateByEmail("123","111111","123@qq.com");
     }
 }
 

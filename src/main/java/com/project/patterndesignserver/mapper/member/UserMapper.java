@@ -22,6 +22,12 @@ public interface UserMapper {
 
     User selectUserById(long id);
 
+    User selectUserByEmail(String email);
+
+    User selectUserByMobile(String mobile);
+
+    User selectUserByUsername(String username);
+
     List<User> selectAllUser();
 
     int addUser(User user);
@@ -30,7 +36,17 @@ public interface UserMapper {
 
     int updateUser(User user);
 
+    int deleteRoleRelation(long id);
+
     int deleteUser(long id);
+
+    int setValidationAndOutDateByEmail(String validationCode,String outDate,String email);
+
+    int setActiveByEmail(boolean active,String email);
+
+    int clearOutDateAndValidationCode(long id);
+
+
 
 
 }

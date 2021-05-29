@@ -32,8 +32,15 @@ public class User implements UserDetails {
 
 
     //初识信息
-    private String createTime;
-    private String lastModify;
+    private long createTime;
+    private long lastModify;
+
+    //注册验证信息
+
+    private String outDate;
+    private String validationCode;
+    private boolean active;
+
 
     @Override
     public String toString(){
@@ -108,19 +115,43 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    public String getCreateTime() {
+    public long getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(long createTime) {
         this.createTime = createTime;
     }
 
-    public String getLastModify() {
+    public long getLastModify() {
         return lastModify;
     }
 
-    public void setLastModify(String lastModify) {
+    public void setLastModify(long lastModify) {
         this.lastModify = lastModify;
+    }
+
+    public String getOutDate() {
+        return outDate;
+    }
+
+    public void setOutDate(String outDate) {
+        this.outDate = outDate;
+    }
+
+    public String getValidationCode() {
+        return validationCode;
+    }
+
+    public void setValidationCode(String validationCode) {
+        this.validationCode = validationCode;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

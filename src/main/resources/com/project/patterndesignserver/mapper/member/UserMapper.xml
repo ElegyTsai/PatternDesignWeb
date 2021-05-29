@@ -10,6 +10,11 @@
         <result property="mobile"   column="mobile" />
         <result property="email" column="email" />
         <result property="enabled" column="enabled" />
+        <result property="outDate" column="outDate"/>
+        <result property="active" column="active"/>
+        <result property="createTime" column="createTime"/>
+        <result property="lastModify" column="lastModify"/>
+        <result property="validationCode" column="validationCode"/>
         <!-- 一对多级联查询，ofType表示集合中的元素类型，将uid传递给selectOrdersByld -->
         <collection property="roles" ofType="com.project.patterndesignserver.model.member.UserRole">
             <id property="id" column="roleid"/>
@@ -26,6 +31,34 @@
             from user left join sysuser on user.id=sysuser.user_id left join role on role.id=sysuser.role_id
             where user.id = #{id};
     </select>
+    <!-- 根据邮箱查询一个用户信息 -->
+    <select id="selectUserByEmail" parameterType="String"
+            resultMap="userAndRole">
+        select user.*,
+               role.id as roleid,role.description, role.rolename, role.available
+        from user left join sysuser on user.id=sysuser.user_id left join role on role.id=sysuser.role_id
+        where user.email = #{email};
+    </select>
+
+    <!-- 根据手机查询一个用户信息 -->
+    <select id="selectUserByMobile" parameterType="String"
+            resultMap="userAndRole">
+        select user.*,
+               role.id as roleid,role.description, role.rolename, role.available
+        from user left join sysuser on user.id=sysuser.user_id left join role on role.id=sysuser.role_id
+        where user.mobile = #{mobile};
+    </select>
+
+    <!-- 根据uname查询一个用户信息 -->
+    <select id="selectUserByUsername" parameterType="String"
+            resultMap="userAndRole">
+        select user.*,
+               role.id as roleid,role.description, role.rolename, role.available
+        from user left join sysuser on user.id=sysuser.user_id left join role on role.id=sysuser.role_id
+        where user.username = #{username};
+    </select>
+
+
     <!-- 查询所有用户信息 -->
     <select id="selectAllUser" resultMap="userAndRole">
         select user.*,role.id as roleid,role.description, role.rolename, role.available
@@ -44,7 +77,7 @@
         INSERT INTO sysuser(user_id,role_id)
         VALUES
         <foreach collection="roles" item="role" separator=",">
-            (#{id},#{role.id})
+            (#{id},(SELECT id from role where rolename=#{role.roleName}))
         </foreach>
     </insert>
     <!--修改一个用户 -->
@@ -53,9 +86,26 @@
                             #{username},password = #{password},mobile=#{mobile},enable=#{enabled} where id = #{id}
     </update>
 
-    <!-- 删除一个用户角色对用 -->
+    <!--修改一个用户的validationCode 和date -->
+    <update id="setValidationAndOutDateByEmail">
+        update user set validationCode =
+                            #{validationCode},outDate = #{outDate} where email = #{email};
+    </update>
+
+    <!--激活用户 -->
+    <update id="setActiveByEmail">
+        update user set active =
+                            #{active} where email = #{email};
+    </update>
+
+    <!--激活用户 -->
+    <update id="clearOutDateAndValidationCode">
+        update user set outDate = null, validationCode = null
+                             where id = #{id};
+    </update>
+    <!-- 删除一个用户角色对应 -->
     <delete id="deleteRoleRelation" parameterType="Long">
-        delete from sysrole where role_id
+        delete from sysuser where user_id
                                    = #{id}
     </delete>
     <!-- 删除一个用户 -->
@@ -63,4 +113,5 @@
         delete from user where id
                                    = #{id}
     </delete>
+
 </mapper>
