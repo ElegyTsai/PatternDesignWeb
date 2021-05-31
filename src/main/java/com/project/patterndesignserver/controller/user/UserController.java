@@ -5,6 +5,7 @@ import com.project.patterndesignserver.mapper.member.UserMapper;
 import com.project.patterndesignserver.mapper.member.UserRoleMapper;
 import com.project.patterndesignserver.model.member.User;
 import com.project.patterndesignserver.model.member.UserRole;
+import com.project.patterndesignserver.service.user.UserService;
 import com.project.patterndesignserver.util.MD5Util;
 import com.project.patterndesignserver.util.TimeUtil;
 import com.project.patterndesignserver.util.result.ExceptionMsg;
@@ -29,6 +30,9 @@ public class UserController extends BaseController {
     @Autowired
     private AmqpTemplate rabbitTemplate;
 
+    @Autowired
+    UserService userService;
+
     @ResponseBody
     @RequestMapping(value = "test",method = RequestMethod.GET)
     public String test(){
@@ -38,72 +42,25 @@ public class UserController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/register/email", method = RequestMethod.POST)
     public Response registerByEmail(User user){
-        System.out.println(user.getUsername());
-        try{
-
-            User register = userMapper.selectUserByEmail(user.getEmail());
-            if(register!=null){
-                return result(ExceptionMsg.EmailUsed);
-            }
-            else{
-                register = userMapper.selectUserByUsername(user.getUsername());
-                if(register!=null){
-                    return result(ExceptionMsg.UsernameUsed);
-                }
-                //设定账户基本信息
-                user.setCreateTime(TimeUtil.getCurrentTime());
-                user.setLastModify(TimeUtil.getCurrentTime());
-                user.setActive(false);
-                BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-                user.setPassword(encoder.encode(user.getPassword()));
-                List<UserRole> roles = new ArrayList<>();
-                roles.add(new UserRole("ROLE_USER"));
-                user.setActive(false);
-                //开始保存账户
-                user.setRoles(roles);
-                userMapper.addUser(user);
-                userMapper.saveRole(user);
-                rabbitTemplate.convertAndSend("reg.email",user.getEmail());
-            }
-        }
-        catch (Exception e){
-            return result(ExceptionMsg.FAIL);
-        }
-        return result();
+        return userService.registerByEmail(user);
     }
 
     @ResponseBody
     @RequestMapping(value = "/activeuser/email", method = RequestMethod.GET)
-    Response activateUser(@Param("sid")String sid,@Param("email") String email){
-        try{
-            User user = userMapper.selectUserByEmail(email);
-            System.out.println(email);
-            System.out.println(user.getId());
-            if(user == null){
-                return result(ExceptionMsg.UsernameNotFound );
-            }
-            Timestamp outDate = Timestamp.valueOf(user.getOutDate());
-            if(outDate.getTime()<=System.currentTimeMillis()){
-                //如果已经过期了的话，直接把这个账户删除了
-                userMapper.deleteRoleRelation(user.getId());
-                userMapper.deleteUser(user.getId());
-                return result(ExceptionMsg.TimeOut);
-            }
-            String key = user.getEmail()+"$"+outDate.getTime()/1000*1000 +"$"+user.getValidationCode();
-            String digitalSignature = MD5Util.encode(key);
-            if(!digitalSignature.equals(sid)){
-                return result(ExceptionMsg.KeyWrong);
-            }
-            userMapper.setActiveByEmail(true,email);
-            userMapper.clearOutDateAndValidationCode(user.getId());
-            System.out.println(email+": 邮箱验证成功");
-            return result(ExceptionMsg.SUCCESS);
+    public Response activateUser(@Param("sid")String sid,@Param("email") String email){
+        return userService.activeUserByEmail(sid, email);
+    }
 
-        }catch (Exception e){
-            e.printStackTrace();
-            return result(ExceptionMsg.FAIL);
-        }
+    @ResponseBody
+    @RequestMapping(value = "/user/password",method = RequestMethod.POST)
+    public Response setPassword(User user){
+        return userService.updatePassword(user);
+    }
 
+    @ResponseBody
+    @RequestMapping(value="/login",method = RequestMethod.POST)
+    public Response Login(User user){
+        return result();
     }
 
 }

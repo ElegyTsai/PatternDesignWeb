@@ -60,6 +60,8 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled(){ return this.enabled;}
 
+    public void setEnabled(boolean enabled){this.enabled=enabled;}
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities(){
         List<GrantedAuthority> authorities = new ArrayList<>();

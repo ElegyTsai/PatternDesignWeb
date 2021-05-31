@@ -46,6 +46,8 @@ public interface UserMapper {
 
     int clearOutDateAndValidationCode(long id);
 
+    int setPassword(User user);
+
 
 
 

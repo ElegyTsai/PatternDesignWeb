@@ -61,9 +61,9 @@
 
     <!-- 查询所有用户信息 -->
     <select id="selectAllUser" resultMap="userAndRole">
-        select user.*,role.id as roleid,role.description, role.rolename, role.available
-        from user,role,sysuser
-        where user.id=sysuser.user_id AND role.id=sysuser.role_id;
+        select user.*,
+               role.id as roleid,role.description, role.rolename, role.available
+        from user left join sysuser on user.id=sysuser.user_id left join role on role.id=sysuser.role_id
     </select>
 
     <!-- 添加一个用户 -->
@@ -83,7 +83,7 @@
     <!--修改一个用户 -->
     <update id="updateUser" parameterType="com.project.patterndesignserver.model.member.User">
         update user set username =
-                            #{username},password = #{password},mobile=#{mobile},enable=#{enabled} where id = #{id}
+                            #{username},password = #{password},mobile=#{mobile},enabled=#{enabled} where id = #{id}
     </update>
 
     <!--修改一个用户的validationCode 和date -->
@@ -102,6 +102,13 @@
     <update id="clearOutDateAndValidationCode">
         update user set outDate = null, validationCode = null
                              where id = #{id};
+    </update>
+
+
+    <!--修改一个用户的password -->
+    <update id="setPassword" parameterType="com.project.patterndesignserver.model.member.User">
+        update user set password =
+                            #{password} where id = #{id};
     </update>
     <!-- 删除一个用户角色对应 -->
     <delete id="deleteRoleRelation" parameterType="Long">
