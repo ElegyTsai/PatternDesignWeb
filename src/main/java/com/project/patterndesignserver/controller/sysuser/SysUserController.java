@@ -37,12 +37,14 @@ public class SysUserController {
     public String deleteUser(@Param("id") long id){
         return sysUserService.deleteUser(id);
     }
+
     @RequestMapping(value = "/update",method = RequestMethod.PUT)
     @ResponseBody
     public String updateUser(@Param("id") long id, @Param("password") String password, @Param("email") String email,
                              @Param("mobile") String mobile,@Param("username")String username,@Param("enable") Boolean enabled){
         return sysUserService.updateUser(id,password,email,mobile,username,enabled);
     }
+
     @GetMapping("/queryAll")
     @ResponseBody
     public List<User> queryAll(){

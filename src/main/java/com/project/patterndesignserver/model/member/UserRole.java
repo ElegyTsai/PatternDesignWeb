@@ -2,10 +2,11 @@ package com.project.patterndesignserver.model.member;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
-public class UserRole {
+public class UserRole implements Serializable {
     //角色表的主键
     private long id;
     private String roleName;

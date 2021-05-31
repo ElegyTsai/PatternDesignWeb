@@ -59,8 +59,8 @@ public class UserController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value="/login",method = RequestMethod.POST)
-    public Response Login(User user){
-        return result();
+    public void Login(){
+//        return result();
     }
 
 }

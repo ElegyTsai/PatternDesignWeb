@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import java.util.Collections;
+import java.util.List;
 
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
@@ -31,7 +32,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         if(tokenHeader == null || !tokenHeader.startsWith(JwtTokenUtil.TOKEN_PREFIX)){
             chain.doFilter(request,response);
             return;
-            //doFilter 表示被过滤了
+            //表示直接放行通过
         }
         SecurityContextHolder.getContext().setAuthentication(getAuthentication(tokenHeader));
         super.doFilterInternal(request,response,chain);
@@ -43,10 +44,10 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     private UsernamePasswordAuthenticationToken getAuthentication(String tokenHeader){
         String token = tokenHeader.replace(JwtTokenUtil.TOKEN_PREFIX,"");
         String username = JwtTokenUtil.getUsername(token);
-        String role = JwtTokenUtil.getUserRole(token);
+        List<SimpleGrantedAuthority> role = JwtTokenUtil.getUserRole(token);
         if( username != null){
             return new UsernamePasswordAuthenticationToken(username,null,
-                    Collections.singleton(new SimpleGrantedAuthority(role)));
+                    role);
         }
         return null;
     }

@@ -73,6 +73,13 @@ public class User implements UserDetails {
         return authorities;
     }
 
+    public List<String>roleToString(){
+        List<String> roleString = new ArrayList<>();
+        for(UserRole role : roles){
+            roleString.add(role.getRoleName());
+        }
+        return roleString;
+    }
 
     public long getId() {
         return id;
