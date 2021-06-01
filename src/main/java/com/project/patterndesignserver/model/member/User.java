@@ -60,17 +60,27 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled(){ return this.enabled;}
 
+    public void setEnabled(boolean enabled){this.enabled=enabled;}
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities(){
         List<GrantedAuthority> authorities = new ArrayList<>();
         List<UserRole> roles = this.getRoles();
         System.out.println("finding roles: "+roles);
+        System.out.println(this.getUsername());
         for(UserRole role : roles){
             authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
         }
         return authorities;
     }
 
+    public List<String>roleToString(){
+        List<String> roleString = new ArrayList<>();
+        for(UserRole role : roles){
+            roleString.add(role.getRoleName());
+        }
+        return roleString;
+    }
 
     public long getId() {
         return id;

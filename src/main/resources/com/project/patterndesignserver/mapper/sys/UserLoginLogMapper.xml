@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.patterndesignserver.mapper.sys.UserLoginLogMapper">
+    <!-- 增加一个log   -->
+    <insert id="saveLog" parameterType="com.project.patterndesignserver.model.sys.UserLoginLog">
+        INSERT INTO loginLog(loginTime,loginip,username,states,way) VALUES (#{loginTime},#{loginip},#{username},#{states},#{way});
+    </insert>
+
+    <!-- 用username查看所有登陆记录 -->
+    <select id="queryLogByUsername" parameterType="String"
+            resultType="com.project.patterndesignserver.model.sys.UserLoginLog">
+        select *
+        from loginLog
+        where username={#username};
+    </select>
+
+</mapper>

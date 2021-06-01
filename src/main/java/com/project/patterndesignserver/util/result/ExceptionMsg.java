@@ -9,7 +9,8 @@ public enum ExceptionMsg {
     EmailUsed("4010","邮箱已被使用"),
     EmailError("4011","邮箱错误"),
     TimeOut("4012","签名过期"),
-    KeyWrong("4113","签名错误")
+    KeyWrong("4013","签名错误"),
+    LackInfo("4020","登陆信息缺失")
     ;
     private String code;
     private String msg;
