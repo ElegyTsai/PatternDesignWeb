@@ -7,6 +7,7 @@ import com.project.patterndesignserver.model.member.UserPermission;
 import com.project.patterndesignserver.service.user.SysUserService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,5 +50,12 @@ public class SysUserController {
     @ResponseBody
     public List<User> queryAll(){
         return sysUserService.queryAll();
+    }
+
+    @GetMapping("/whoIam")
+    @ResponseBody
+    public String whoIam(){
+        User user =(User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return user.getUsername();
     }
 }

@@ -2,12 +2,15 @@ package com.project.patterndesignserver.config;
 
 import com.project.patterndesignserver.config.authenticationhandler.user.MyAuthenticationFailureHandler;
 import com.project.patterndesignserver.config.authenticationhandler.user.MyAuthenticationSuccessHandler;
+import com.project.patterndesignserver.mapper.sys.UserLoginLogMapper;
+import com.project.patterndesignserver.module.filter.JWTAuthorizationFilter;
 import com.project.patterndesignserver.service.security.UserSecurityService;
 import com.project.patterndesignserver.service.user.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -33,27 +36,33 @@ public class SecurityConfig {
         MyAuthenticationFailureHandler myAuthenticationFailureHandler;
         @Autowired
         MyAuthenticationSuccessHandler myAuthenticationSuccessHandler;
+        @Autowired
+        StringRedisTemplate stringRedisTemplate;
+        @Autowired
+        UserLoginLogMapper userLoginLogMapper;
 
         @Override
         public void configure(HttpSecurity http) throws Exception {
 //            这里表示全部允许 无验证
 //            http.authorizeRequests(authorizedRequests -> authorizedRequests.anyRequest().permitAll());
 
-            http.antMatcher("/admin/**").
-                    formLogin().usernameParameter("uname").passwordParameter("pwd").loginPage("/home/login")
+            http//.antMatcher("/admin/**")
+                    .formLogin().usernameParameter("uname").passwordParameter("pwd").loginProcessingUrl("/process")
                     .successHandler(myAuthenticationSuccessHandler).failureHandler(myAuthenticationFailureHandler)
                     .and()
-                    .antMatcher("/home/login")
-                    .userDetailsService(service())
+//                    .antMatcher("/home/login")
+//                    .userDetailsService(service())
                     .authorizeRequests()
+                    .antMatchers("/home/login").permitAll()
                     .antMatchers("/admin/login").permitAll()
-                    .antMatchers("/admin/**").access("hasRole('ADMIN')")
-                    .anyRequest().permitAll();
+                    .antMatchers("/home/logout").permitAll()
+                    .antMatchers("/admin/user/**").access("hasRole('ADMIN')")
+                    .anyRequest().permitAll()
+                    .and()
+                    .addFilter(new JWTAuthorizationFilter(authenticationManager(),stringRedisTemplate,userLoginLogMapper))
+                    ;
+
             http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-            http.logout().logoutUrl("/home/logout").permitAll();
-
-
             http.cors().and().csrf().disable();
             //禁用csrf
         }

@@ -59,8 +59,15 @@ public class UserController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value="/login",method = RequestMethod.POST)
-    public void Login(){
+    public String Login(){
 //        return result();
+        return "login";
+    }
+
+    @ResponseBody
+    @RequestMapping(value ="/logout",method = RequestMethod.GET)
+    public Response logout(){
+        return userService.logout();
     }
 
 }

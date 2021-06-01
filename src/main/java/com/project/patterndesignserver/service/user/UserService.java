@@ -13,5 +13,7 @@ public interface UserService {
 
     public Response login(User user);
 
+    public Response logout();
+
 
 }

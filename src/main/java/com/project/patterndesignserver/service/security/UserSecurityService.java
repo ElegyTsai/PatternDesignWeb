@@ -15,6 +15,7 @@ public class UserSecurityService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException{
+        System.out.println("load user:"+name);
         User user = userMapper.selectUserByUsername(name);
         if(user == null){
             User emailUser = userMapper.selectUserByEmail(name);

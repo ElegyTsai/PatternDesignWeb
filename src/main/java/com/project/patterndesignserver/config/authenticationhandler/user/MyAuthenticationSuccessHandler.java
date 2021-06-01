@@ -26,6 +26,7 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
     @Autowired
     StringRedisTemplate stringRedisTemplate;
 
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException,SecurityException{
@@ -44,6 +45,10 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
 
             String token = JwtTokenUtil.crateToken(user.getUsername(),user.roleToString(),request.getParameter("isRememberMe").equals("true"));
             stringRedisTemplate.opsForValue().set(user.getUsername(),token);
+            System.out.println("key:"+user.getUsername());
+            System.out.println("value:"+token);
+            String preToken = stringRedisTemplate.opsForValue().get(JwtTokenUtil.getUsername(token));
+            System.out.println("getvalue:"+preToken);
             response.addHeader(JwtTokenUtil.TOKEN_HEADER,JwtTokenUtil.TOKEN_PREFIX+token);
             response.setContentType("application/json;charset=utf-8");
             PrintWriter out = response.getWriter();

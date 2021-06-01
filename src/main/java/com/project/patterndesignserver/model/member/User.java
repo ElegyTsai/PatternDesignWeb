@@ -67,6 +67,7 @@ public class User implements UserDetails {
         List<GrantedAuthority> authorities = new ArrayList<>();
         List<UserRole> roles = this.getRoles();
         System.out.println("finding roles: "+roles);
+        System.out.println(this.getUsername());
         for(UserRole role : roles){
             authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
         }

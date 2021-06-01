@@ -11,6 +11,8 @@ import com.project.patterndesignserver.util.result.ExceptionMsg;
 import com.project.patterndesignserver.util.result.Response;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,9 @@ public class UserServiceImpl extends BaseController implements UserService{
 
     @Autowired
     private AmqpTemplate rabbitTemplate;
+
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;
 
     @Override
     public Response registerByEmail(User user){
@@ -130,6 +135,19 @@ public class UserServiceImpl extends BaseController implements UserService{
             return result(ExceptionMsg.FAIL);
         }
         return result();
+    }
+
+    @Override
+    public Response logout(){
+        try {
+            String name = SecurityContextHolder.getContext().getAuthentication().getName();
+            stringRedisTemplate.delete(name);
+            return result(ExceptionMsg.SUCCESS);
+        }
+        catch (Exception e)
+        {
+            return result(ExceptionMsg.FAIL);
+        }
     }
 
 }

@@ -11,4 +11,8 @@ public class UserLoginLog {
     private int states;
     private int way;  // 1 表示web 2表示jwt
 
+    @Override
+    public String toString(){
+        return "id:"+id+" loginTime:"+loginTime+" username: "+username +" state:"+states + " way:" + way;
+    }
 }
