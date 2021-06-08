@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.patterndesignserver.mapper.content.image.PublicImageMapper">
+
+    <!-- 用图片id查找图片 -->
+    <select id="selectImageById" parameterType="long"
+            resultType="com.project.patterndesignserver.model.content.image.PublicImage">
+        select *
+        from sysImage
+        where id=#{id};
+    </select>
+
+    <!-- 查找有某个标签的图片 -->
+    <select id="queryByTag" parameterType="String"
+            resultType="com.project.patterndesignserver.model.content.image.PublicImage">
+        select *
+        from sysImage
+        where sysImage.tag  like CONCAT("%",#{tag},"%");
+    </select>
+
+    <!-- 查找多个Tags And -->
+    <select id="queryByTagsAnd" parameterType="java.util.List"
+            resultType="com.project.patterndesignserver.model.content.image.PublicImage">
+        select *
+        from sysImage
+        where
+              <foreach collection="tags" item="tag" separator="AND">
+                  sysImage.tag like CONCAT("%",#{tag},"%")
+              </foreach>
+
+    </select>
+    <!-- 查找多个Tags OR -->
+    <select id="queryByTagsOr" parameterType="java.util.List"
+            resultType="com.project.patterndesignserver.model.content.image.PublicImage">
+        select *
+        from sysImage
+        where
+        <foreach collection="tags" item="tag" separator="OR">
+            sysImage.tag like CONCAT("%",#{tag},"%")
+        </foreach>
+
+    </select>
+
+    <!-- 查找指定权限的图片 -->
+    <select id="queryByPermission" parameterType="String"
+            resultType="com.project.patterndesignserver.model.content.image.PublicImage">
+        select *
+        from sysImage
+        where sysImage.permission = #{permission};
+    </select>
+
+    <!-- 添加一张图片-->
+    <insert id="addImage" parameterType="com.project.patterndesignserver.model.content.image.PublicImage">
+        INSERT INTO sysImage(thumbnailPath,imagePath,imageName,MD5,available,permission,tag)
+        VALUES(#{thumbnailPath},#{imagePath},#{imageName},#{MD5},#{available},#{permission},#{tag})
+    </insert>
+
+    <!-- 删除一张图片 -->
+    <delete id="deleteImage" parameterType="Long">
+        delete from sysImage where sysImage.id=#{id}
+    </delete>
+
+</mapper>
