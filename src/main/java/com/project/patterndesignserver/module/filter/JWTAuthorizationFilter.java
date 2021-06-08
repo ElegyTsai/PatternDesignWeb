@@ -54,7 +54,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         String tokenHeader = request.getHeader(JwtTokenUtil.TOKEN_HEADER);
 
         if(tokenHeader == null || !tokenHeader.startsWith(JwtTokenUtil.TOKEN_PREFIX)){
-            System.out.println("miss token");
+            //System.out.println("miss token");
             chain.doFilter(request,response);
             return;
             //表示直接放行通过
@@ -72,7 +72,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         }
 
         try{
-            System.out.println("verifying token");
+            //System.out.println("verifying token");
             System.out.println(JwtTokenUtil.getUsername(tokenValue));
             String preToken = stringRedisTemplate.opsForValue().get(JwtTokenUtil.getUsername(tokenValue));
             if(!tokenValue.equals(preToken)){
