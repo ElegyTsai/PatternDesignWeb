@@ -7,6 +7,7 @@ import com.project.patterndesignserver.util.IpUtil;
 import com.project.patterndesignserver.util.JwtTokenUtil;
 import io.jsonwebtoken.Jwt;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -115,6 +116,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             String username = JwtTokenUtil.getUsername(token);
             List<SimpleGrantedAuthority> role = JwtTokenUtil.getUserRole(token);
             if (username != null) {
+                //User user = (User) JSONObject.toBean(JSONObject.fromObject(stringRedisTemplate.opsForValue().get("user_"+username)),User.class);
                 return new UsernamePasswordAuthenticationToken(username, null,
                         role);
             }
