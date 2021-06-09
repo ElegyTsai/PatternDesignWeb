@@ -8,6 +8,7 @@ import com.project.patterndesignserver.util.result.ExceptionMsg;
 import com.project.patterndesignserver.util.result.Response;
 import com.project.patterndesignserver.util.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,8 +28,10 @@ public class SysImageServiceImpl extends BaseController implements SysImageServi
     @Autowired
     PublicImageMapper publicImageMapper;
 
-    String path = "/Users/elegy/Desktop/ImageData/";
-    String urlPrefix = "localhost:8080/img/public/getImage/";
+    @Value("${image.save.path}")
+    private String path;
+    @Value("${image.url}")
+    private String urlPrefix;
 
     @Override
     public Result<String> uploadImage(MultipartFile multipartFile, String tag, String permission){

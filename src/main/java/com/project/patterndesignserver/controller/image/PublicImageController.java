@@ -10,8 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -26,8 +25,6 @@ public class PublicImageController {
     public Result<String> upload(@RequestParam("pic")MultipartFile multipartFile, @RequestParam("tag") String tag
             , @RequestParam("permission") String permission){
         return sysImageService.uploadImage(multipartFile,tag,permission);
-//        System.out.println(multipartFile.getOriginalFilename());
-//        return new Result<>();
     }
     @RequestMapping(value = "/delete",method = RequestMethod.DELETE)
     @ResponseBody

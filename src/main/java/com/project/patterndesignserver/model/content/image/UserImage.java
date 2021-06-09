@@ -20,6 +20,9 @@ public class ImageBase {
 }
  */
 @Data
-public class UserImage {
-    private List<Long> user_id;
+public class UserImage extends ImageBase{
+    private long userId;
+    private String UUID;
+    private String myFileName;
+    private String myGroup;
 }
