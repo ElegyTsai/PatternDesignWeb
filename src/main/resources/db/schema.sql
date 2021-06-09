@@ -86,12 +86,14 @@ CREATE TABLE IF NOT EXISTS `userImage`(
     PRIMARY KEY (`id`)
 )ENGINE = InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `userImage`(
+CREATE TABLE IF NOT EXISTS `relationOfUserImage`(
     `id` BIGINT NOT NULL AUTO_INCREMENT,
-    `user_id` BIGINT DEFAULT NULL,
+    `UUID` VARCHAR(80) DEFAULT NULL,
+    `myGroup` VARCHAR(80) DEFAULT NULL,
+    `user_id` INT DEFAULT NULL,
     `image_id` BIGINT DEFAULT NULL,
-    KEY `user_id` (`user_id`),
-    CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+    KEY `userIm_id` (`user_id`),
+    CONSTRAINT `userIm_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
     KEY `image_id` (`image_id`),
     CONSTRAINT `image_id` FOREIGN KEY (`image_id`) REFERENCES `userImage` (`id`),
     PRIMARY KEY (`id`)
