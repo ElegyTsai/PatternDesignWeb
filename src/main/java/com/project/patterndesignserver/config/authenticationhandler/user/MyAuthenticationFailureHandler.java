@@ -30,7 +30,7 @@ public class MyAuthenticationFailureHandler extends SimpleUrlAuthenticationFailu
         public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                 AuthenticationException e) throws IOException,SecurityException{
             request.setCharacterEncoding("UTF-8");
-            String username = request.getParameter("uname");
+            String username = request.getParameter("unknown name");
             System.out.println("Authentication fail");
             UserLoginLog loginRecord = new UserLoginLog();
             loginRecord.setLoginip(IpUtil.getIpAddr(request));

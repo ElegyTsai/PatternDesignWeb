@@ -40,18 +40,18 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
             loginRecord.setLoginip(IpUtil.getIpAddr(request));
             loginRecord.setLoginTime(System.currentTimeMillis());
             loginRecord.setStates(1);
-            loginRecord.setUsername(user.getUsername());
+            loginRecord.setUsername(user.getId()+"");
             loginRecord.setWay(1); // web登陆
             userLoginLogMapper.saveLog(loginRecord);
             //需要一个跳转页面
 
-            String token = JwtTokenUtil.crateToken(user.getUsername(),user.roleToString(),request.getParameter("isRememberMe").equals("true"));
-            stringRedisTemplate.opsForValue().set(user.getUsername(),token,request.getParameter("isRememberMe").equals("true")?7:1, TimeUnit.DAYS);
-            stringRedisTemplate.opsForValue().set("user_"+user.getUsername(),JSONObject.fromObject(user).toString());
-            System.out.println("key:"+user.getUsername());
+            String token = JwtTokenUtil.crateToken(user.getId()+"",user.roleToString(),request.getParameter("isRememberMe").equals("true"));
+            stringRedisTemplate.opsForValue().set(user.getId()+"",token,request.getParameter("isRememberMe").equals("true")?7:1, TimeUnit.DAYS);
+            stringRedisTemplate.opsForValue().set("user_"+user.getId(),JSONObject.fromObject(user).toString());
+            System.out.println("key:"+user.getMobile());
             System.out.println("value:"+token);
             String preToken = stringRedisTemplate.opsForValue().get(JwtTokenUtil.getUsername(token));
-            System.out.println("getvalue:"+preToken);
+            System.out.println("getValue:"+preToken);
             response.addHeader(JwtTokenUtil.TOKEN_HEADER,JwtTokenUtil.TOKEN_PREFIX+token);
             response.setContentType("application/json;charset=utf-8");
             PrintWriter out = response.getWriter();
