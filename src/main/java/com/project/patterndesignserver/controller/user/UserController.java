@@ -10,9 +10,13 @@ import com.project.patterndesignserver.util.MD5Util;
 import com.project.patterndesignserver.util.TimeUtil;
 import com.project.patterndesignserver.util.result.ExceptionMsg;
 import com.project.patterndesignserver.util.result.Response;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Controller
 @RequestMapping("home")
@@ -71,14 +76,18 @@ public class UserController extends BaseController {
         return userService.logout();
     }
 
+    @ApiOperation(value = "获取手机验证码",tags = {"注册"},notes = "用get")
     @ResponseBody
     @RequestMapping(value = "/getCode",method = RequestMethod.GET)
     public Response getCode(@Param("mobile")String mobile){
         return userService.sendPhoneMessage(mobile);
     }
 
+
     @ResponseBody
     @RequestMapping(value = "/register/mobile",method = RequestMethod.POST)
+    @ApiOperation(value = "手机用户注册",tags = {"注册"},notes = "只能是POST,其他值保持空缺，" +
+            "实际上只需要Mobile,username,password,validationCode这几个属性")
     public Response register(User user){
         return userService.registerByMobile(user);
     }
