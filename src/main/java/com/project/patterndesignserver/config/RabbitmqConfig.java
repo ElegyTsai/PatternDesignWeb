@@ -11,4 +11,7 @@ public class RabbitmqConfig {
     @Bean
     public Queue regQueue() { return new Queue("reg.email");}
 
+    @Bean
+    public Queue regCodeQueue(){ return new Queue("reg.phone");}
+
 }

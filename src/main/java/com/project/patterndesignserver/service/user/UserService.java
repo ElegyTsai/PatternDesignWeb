@@ -15,5 +15,9 @@ public interface UserService {
 
     public Response logout();
 
+    public Response sendPhoneMessage(String phoneNumber);
+
+    public Response registerByMobile(User user);
+
 
 }

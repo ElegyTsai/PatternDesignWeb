@@ -45,6 +45,7 @@ public class UserController extends BaseController {
         return userService.registerByEmail(user);
     }
 
+
     @ResponseBody
     @RequestMapping(value = "/activeuser/email", method = RequestMethod.GET)
     public Response activateUser(@Param("sid")String sid,@Param("email") String email){
@@ -70,4 +71,15 @@ public class UserController extends BaseController {
         return userService.logout();
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/getCode",method = RequestMethod.GET)
+    public Response getCode(@Param("mobile")String mobile){
+        return userService.sendPhoneMessage(mobile);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/register/mobile",method = RequestMethod.POST)
+    public Response register(User user){
+        return userService.registerByMobile(user);
+    }
 }

@@ -6,6 +6,8 @@ public enum ExceptionMsg {
     UserNotFound("4001","用户没有找到"),
     UsernameNotFound("4002","用户名没有找到"),
     UsernameUsed("4003","用户名已被使用"),
+    PhoneUsed("4004","手机号已被使用"),
+    CodeError("4005","验证码错误或过期"),
     EmailUsed("4010","邮箱已被使用"),
     EmailError("4011","邮箱错误"),
     TimeOut("4012","签名过期"),

@@ -1,4 +1,4 @@
-package com.project.patterndesignserver.service.email;
+package com.project.patterndesignserver.service.verify;
 
 import com.project.patterndesignserver.mapper.member.UserMapper;
 import com.project.patterndesignserver.util.MD5Util;
@@ -11,7 +11,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.sql.Timestamp;
 import java.util.UUID;

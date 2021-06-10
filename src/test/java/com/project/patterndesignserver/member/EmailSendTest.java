@@ -1,6 +1,6 @@
 package com.project.patterndesignserver.member;
 
-import com.project.patterndesignserver.service.email.AsynSendVerifyEmailService;
+import com.project.patterndesignserver.service.verify.AsynSendVerifyEmailService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
