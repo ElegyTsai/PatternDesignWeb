@@ -5,6 +5,7 @@ import com.project.patterndesignserver.model.member.User;
 import com.project.patterndesignserver.model.sys.UserLoginLog;
 import com.project.patterndesignserver.util.IpUtil;
 import com.project.patterndesignserver.util.JwtTokenUtil;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.core.Authentication;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.concurrent.TimeUnit;
 
 @Component("myAuthenticationSuccessHandler")
 public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
@@ -44,7 +46,8 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
             //需要一个跳转页面
 
             String token = JwtTokenUtil.crateToken(user.getUsername(),user.roleToString(),request.getParameter("isRememberMe").equals("true"));
-            stringRedisTemplate.opsForValue().set(user.getUsername(),token);
+            stringRedisTemplate.opsForValue().set(user.getUsername(),token,request.getParameter("isRememberMe").equals("true")?7:1, TimeUnit.DAYS);
+            stringRedisTemplate.opsForValue().set("user_"+user.getUsername(),JSONObject.fromObject(user).toString());
             System.out.println("key:"+user.getUsername());
             System.out.println("value:"+token);
             String preToken = stringRedisTemplate.opsForValue().get(JwtTokenUtil.getUsername(token));

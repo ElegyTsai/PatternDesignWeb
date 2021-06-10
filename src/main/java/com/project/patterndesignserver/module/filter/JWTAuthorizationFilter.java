@@ -7,6 +7,7 @@ import com.project.patterndesignserver.util.IpUtil;
 import com.project.patterndesignserver.util.JwtTokenUtil;
 import io.jsonwebtoken.Jwt;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -54,7 +55,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         String tokenHeader = request.getHeader(JwtTokenUtil.TOKEN_HEADER);
 
         if(tokenHeader == null || !tokenHeader.startsWith(JwtTokenUtil.TOKEN_PREFIX)){
-            System.out.println("miss token");
+            //System.out.println("miss token");
             chain.doFilter(request,response);
             return;
             //表示直接放行通过
@@ -72,7 +73,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         }
 
         try{
-            System.out.println("verifying token");
+            //System.out.println("verifying token");
             System.out.println(JwtTokenUtil.getUsername(tokenValue));
             String preToken = stringRedisTemplate.opsForValue().get(JwtTokenUtil.getUsername(tokenValue));
             if(!tokenValue.equals(preToken)){
@@ -115,6 +116,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             String username = JwtTokenUtil.getUsername(token);
             List<SimpleGrantedAuthority> role = JwtTokenUtil.getUserRole(token);
             if (username != null) {
+                //User user = (User) JSONObject.toBean(JSONObject.fromObject(stringRedisTemplate.opsForValue().get("user_"+username)),User.class);
                 return new UsernamePasswordAuthenticationToken(username, null,
                         role);
             }

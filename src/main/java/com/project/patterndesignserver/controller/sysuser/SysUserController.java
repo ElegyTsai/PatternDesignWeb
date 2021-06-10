@@ -5,8 +5,10 @@ import com.project.patterndesignserver.mapper.member.UserRoleMapper;
 import com.project.patterndesignserver.model.member.User;
 import com.project.patterndesignserver.model.member.UserPermission;
 import com.project.patterndesignserver.service.user.SysUserService;
+import net.sf.json.JSONObject;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
@@ -23,6 +25,9 @@ public class SysUserController {
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;
 
     @Autowired
     SysUserService sysUserService;
@@ -55,7 +60,9 @@ public class SysUserController {
     @GetMapping("/whoIam")
     @ResponseBody
     public String whoIam(){
-        User user =(User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return user.getUsername();
+        String username =SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        User user = (User) JSONObject.toBean(JSONObject.fromObject(stringRedisTemplate.opsForValue().get("user_"+username)),User.class);
+//        User user =(User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return  user.getId()+"";
     }
 }
