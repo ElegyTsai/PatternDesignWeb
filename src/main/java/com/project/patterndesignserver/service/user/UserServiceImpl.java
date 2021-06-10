@@ -5,8 +5,10 @@ import com.project.patterndesignserver.controller.BaseController;
 import com.project.patterndesignserver.mapper.member.UserMapper;
 import com.project.patterndesignserver.model.member.User;
 import com.project.patterndesignserver.model.member.UserRole;
+import com.project.patterndesignserver.service.verify.AsynSendVerifyCodeMessageService;
 import com.project.patterndesignserver.util.MD5Util;
 import com.project.patterndesignserver.util.TimeUtil;
+import com.project.patterndesignserver.util.UUIDUtil;
 import com.project.patterndesignserver.util.result.ExceptionMsg;
 import com.project.patterndesignserver.util.result.Response;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -30,6 +32,9 @@ public class UserServiceImpl extends BaseController implements UserService{
 
     @Autowired
     StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    AsynSendVerifyCodeMessageService asynSendVerifyCodeMessageService;
 
     @Override
     public Response registerByEmail(User user){
@@ -148,6 +153,51 @@ public class UserServiceImpl extends BaseController implements UserService{
         {
             return result(ExceptionMsg.FAIL);
         }
+    }
+
+    @Override
+    public Response sendPhoneMessage(String phoneNumber) {
+        try {
+//            User user = userMapper.selectUserByMobile(phoneNumber);
+//            if(user!=null){
+//                return result(ExceptionMsg.PhoneUsed);
+//            }
+//            注释掉的原因是除了注册 还有其他地方也需要用到code  统一成这个api
+            rabbitTemplate.convertAndSend("reg.phone",phoneNumber);
+            return result();
+        }
+        catch (Exception e)
+        {
+            return result(ExceptionMsg.FAIL);
+        }
+    }
+
+    @Override
+    public Response registerByMobile(User user) {
+        User userExisted = userMapper.selectUserByMobile(user.getMobile());
+        if(userExisted!=null){
+            return result(ExceptionMsg.PhoneUsed);
+        }
+        if(asynSendVerifyCodeMessageService.verifyCode(user.getMobile(),user.getValidationCode())){
+            user.setCreateTime(TimeUtil.getCurrentTime());
+            user.setLastModify(TimeUtil.getCurrentTime());
+            user.setActive(true);
+            user.setId(UUIDUtil.getUUIDOfNumber());
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            user.setPassword(encoder.encode(user.getPassword()));
+            List<UserRole> roles = new ArrayList<>();
+            roles.add(new UserRole("ROLE_USER"));
+            //开始保存账户
+            user.setRoles(roles);
+            userMapper.addUser(user);
+            userMapper.saveRole(user);
+            return result();
+        }else{
+            return result(ExceptionMsg.CodeError);
+        }
+
+
+
     }
 
 }

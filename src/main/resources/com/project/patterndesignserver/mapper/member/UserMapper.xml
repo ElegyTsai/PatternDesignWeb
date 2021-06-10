@@ -67,9 +67,9 @@
     </select>
 
     <!-- 添加一个用户 -->
-    <insert id="addUser" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.project.patterndesignserver.model.member.User">
-        INSERT INTO user(username,email,password,mobile,enabled,createTime,lastModify)
-            VALUES(#{username},#{email},#{password},#{mobile},#{enabled},#{createTime},#{lastModify})
+    <insert id="addUser" parameterType="com.project.patterndesignserver.model.member.User">
+        INSERT INTO user(id,username,email,password,mobile,enabled,createTime,lastModify,active)
+            VALUES(#{id},#{username},#{email},#{password},#{mobile},#{enabled},#{createTime},#{lastModify},#{active})
     </insert>
 
     <!-- 保存用户角色 -->

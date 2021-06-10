@@ -17,21 +17,21 @@ public class UserSecurityService implements UserDetailsService {
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException{
         System.out.println("load user:"+name);
         User user = userMapper.selectUserByUsername(name);
-        if(user == null){
-            User emailUser = userMapper.selectUserByEmail(name);
-            if(emailUser == null){
+//        if(user == null){
+//            User emailUser = userMapper.selectUserByEmail(name);
+//            if(emailUser == null){
                 User mobileUser = userMapper.selectUserByMobile(name);
                 if(mobileUser == null){
-                    throw new UsernameNotFoundException("用户名邮箱手机不存在");
+                    throw new UsernameNotFoundException("手机不存在");
                 }
                 else{
                     user = mobileUser;
                 }
-            }
-            else{
-                user = emailUser;
-            }
-        }
+//            }
+//            else{
+//                user = emailUser;
+//            }
+//        }
         return user;
     }
 }

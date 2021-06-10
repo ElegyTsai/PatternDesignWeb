@@ -1,6 +1,6 @@
 package com.project.patterndesignserver.controller.user;
 
-import com.project.patterndesignserver.service.email.AsynSendVerifyEmailService;
+import com.project.patterndesignserver.service.verify.AsynSendVerifyEmailService;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
