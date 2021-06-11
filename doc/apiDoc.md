@@ -13,7 +13,7 @@
 
 
 ### URI scheme
-*域名* : localhost:8080  
+*域名* : localhost:8081  
 *基础路径* : /
 
 
@@ -100,7 +100,7 @@ POST /api/home/register/mobile
 
 
 ##### 说明
-只能是POST,其他值保持空缺，实际上只需要Mobile,username,password,validationCode这几个属性
+只能是POST,其他值保持空缺，实际上只需要Mobile,username,password,validationCode这几个属性，如果注册成功，还会额外返回一个token用于后续登陆
 
 
 ##### 参数
