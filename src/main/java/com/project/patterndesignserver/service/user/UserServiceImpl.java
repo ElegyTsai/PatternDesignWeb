@@ -6,11 +6,13 @@ import com.project.patterndesignserver.mapper.member.UserMapper;
 import com.project.patterndesignserver.model.member.User;
 import com.project.patterndesignserver.model.member.UserRole;
 import com.project.patterndesignserver.service.verify.AsynSendVerifyCodeMessageService;
+import com.project.patterndesignserver.util.JwtTokenUtil;
 import com.project.patterndesignserver.util.MD5Util;
 import com.project.patterndesignserver.util.TimeUtil;
 import com.project.patterndesignserver.util.UUIDUtil;
 import com.project.patterndesignserver.util.result.ExceptionMsg;
 import com.project.patterndesignserver.util.result.Response;
+import net.sf.json.JSONObject;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -18,9 +20,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class UserServiceImpl extends BaseController implements UserService{
@@ -173,10 +178,16 @@ public class UserServiceImpl extends BaseController implements UserService{
     }
 
     @Override
-    public Response registerByMobile(User user) {
+    public Response registerByMobile(User user, HttpServletResponse response) {
+//        System.out.println("注册用户："+user.getUsername());
+        try{
         User userExisted = userMapper.selectUserByMobile(user.getMobile());
         if(userExisted!=null){
-            return result(ExceptionMsg.PhoneUsed);
+            //            return result(ExceptionMsg.PhoneUsed);
+            //注释是为了方便调试
+            userMapper.deleteRoleRelation(userExisted.getId());
+            userMapper.deleteUser(userExisted.getId());
+
         }
         if(asynSendVerifyCodeMessageService.verifyCode(user.getMobile(),user.getValidationCode())){
             user.setCreateTime(TimeUtil.getCurrentTime());
@@ -191,9 +202,25 @@ public class UserServiceImpl extends BaseController implements UserService{
             user.setRoles(roles);
             userMapper.addUser(user);
             userMapper.saveRole(user);
+            System.out.println("注册成功");
+            //生成token 并缓存
+            String token = JwtTokenUtil.crateToken(user.getId()+"",user.roleToString(),false);
+            stringRedisTemplate.opsForValue().set(user.getId()+"",token,1, TimeUnit.DAYS);
+            stringRedisTemplate.opsForValue().set("user_"+user.getId(), JSONObject.fromObject(user).toString());
+            System.out.println("key:"+user.getMobile());
+            System.out.println("value:"+token);
+            String preToken = stringRedisTemplate.opsForValue().get(JwtTokenUtil.getUsername(token));
+            System.out.println("getValue:"+preToken);
+            response.addHeader(JwtTokenUtil.TOKEN_HEADER,JwtTokenUtil.TOKEN_PREFIX+token);
+            response.setContentType("application/json;charset=utf-8");
             return result();
         }else{
             return result(ExceptionMsg.CodeError);
+        }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return result(ExceptionMsg.FAIL);
         }
 
 

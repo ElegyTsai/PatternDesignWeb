@@ -9,8 +9,9 @@ public class Response {
         this.rspMsg=msg.getMsg();
     }
     public Response(){
-        rspCode="0000";
-        rspMsg="操作成功";
+        ExceptionMsg msg =  ExceptionMsg.SUCCESS;
+        this.rspCode=msg.getCode();
+        this.rspMsg=msg.getMsg();
     }
 
     @Override
