@@ -2,7 +2,7 @@ package com.project.patterndesignserver.util.result;
 
 public enum ExceptionMsg {
     FAIL("4000","操作失败"),
-    SUCCESS("1000","操作成功"),
+    SUCCESS("2000","操作成功"),
     UserNotFound("4001","用户没有找到"),
     UsernameNotFound("4002","用户名没有找到"),
     UsernameUsed("4003","用户名已被使用"),
