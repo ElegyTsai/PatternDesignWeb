@@ -35,7 +35,7 @@ User Controller
 <a name="getcodeusingget"></a>
 #### 获取手机验证码
 ```
-GET /home/getCode
+GET /api/home/getCode
 ```
 
 
@@ -69,7 +69,7 @@ GET /home/getCode
 
 ###### 请求 path
 ```
-/home/getCode
+/api/home/getCode
 ```
 
 
@@ -95,7 +95,7 @@ json :
 <a name="registerusingpost"></a>
 #### 手机用户注册
 ```
-POST /home/register/mobile
+POST /api/home/register/mobile
 ```
 
 
@@ -175,7 +175,7 @@ POST /home/register/mobile
 
 ###### 请求 path
 ```
-/home/register/mobile
+/api/home/register/mobile
 ```
 
 

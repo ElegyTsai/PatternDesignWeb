@@ -28,7 +28,7 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping("home")
+@RequestMapping("api/home")
 public class UserController extends BaseController {
     @Autowired
     UserMapper userMapper;

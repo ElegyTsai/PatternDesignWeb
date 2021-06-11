@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-@RequestMapping("/img/user")
+@RequestMapping("api/img/user")
 @Controller
 public class UserImageController {
     @Autowired
