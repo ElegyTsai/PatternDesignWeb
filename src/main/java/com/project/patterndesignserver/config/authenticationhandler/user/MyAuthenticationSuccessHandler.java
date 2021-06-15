@@ -42,7 +42,7 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
             loginRecord.setLoginip(IpUtil.getIpAddr(request));
             loginRecord.setLoginTime(System.currentTimeMillis());
             loginRecord.setStates(1);
-            loginRecord.setUsername(user.getId()+"");
+            loginRecord.setUsername(request.getParameter("uname")+"");
             loginRecord.setWay(1); // web登陆
             userLoginLogMapper.saveLog(loginRecord);
             //需要一个跳转页面
