@@ -13,7 +13,7 @@ public enum ExceptionMsg {
     TimeOut("4012","签名过期"),
     PasswordError("4013","密码错误"),
     UserNotExisted("4014","账户未注册"),
-    UserDiabled("4015","用户被锁定"),
+    UserDisabled("4015","用户被锁定"),
     KeyWrong("4013","签名错误"),
     LackInfo("4020","登陆信息缺失")
     ;
