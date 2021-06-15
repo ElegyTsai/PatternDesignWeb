@@ -5,6 +5,8 @@ import com.project.patterndesignserver.model.member.User;
 import com.project.patterndesignserver.model.sys.UserLoginLog;
 import com.project.patterndesignserver.util.IpUtil;
 import com.project.patterndesignserver.util.JwtTokenUtil;
+import com.project.patterndesignserver.util.result.ExceptionMsg;
+import com.project.patterndesignserver.util.result.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.core.Authentication;
@@ -30,7 +32,7 @@ public class MyAuthenticationFailureHandler extends SimpleUrlAuthenticationFailu
         public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                 AuthenticationException e) throws IOException,SecurityException{
             request.setCharacterEncoding("UTF-8");
-            String username = request.getParameter("unknown name");
+            String username = request.getParameter("mobile");
             System.out.println("Authentication fail");
             UserLoginLog loginRecord = new UserLoginLog();
             loginRecord.setLoginip(IpUtil.getIpAddr(request));
@@ -42,6 +44,7 @@ public class MyAuthenticationFailureHandler extends SimpleUrlAuthenticationFailu
 
             response.setContentType("application/json;charset=utf-8");
             PrintWriter out = response.getWriter();
+            Response rep = new Response(ExceptionMsg.MobileNotExisted);
             out.write("登陆失败，用户名或密码错误");
             out.flush();
             out.close();
