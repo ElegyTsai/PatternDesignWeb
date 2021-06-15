@@ -10,9 +10,10 @@ public enum ExceptionMsg {
     CodeError("4005","验证码错误或过期"),
     EmailUsed("4010","邮箱已被使用"),
     EmailError("4011","邮箱错误"),
-    MobileNotExisted("4012","手机号未注册"),
-    PasswordError("4013","密码错误"),
     TimeOut("4012","签名过期"),
+    PasswordError("4013","密码错误"),
+    UserNotExisted("4014","账户未注册"),
+    UserDiabled("4015","用户被锁定"),
     KeyWrong("4013","签名错误"),
     LackInfo("4020","登陆信息缺失")
     ;
