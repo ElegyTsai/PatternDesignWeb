@@ -49,7 +49,7 @@ public class MyAuthenticationFailureHandler extends SimpleUrlAuthenticationFailu
             if(e instanceof UsernameNotFoundException){
                 rmsg = new Response(ExceptionMsg.UserNotExisted);
             }else if (e instanceof LockedException) {
-                rmsg = new Response(ExceptionMsg.UserDiabled);
+                rmsg = new Response(ExceptionMsg.UserDisabled);
             }
             else{
                     rmsg = new Response(ExceptionMsg.PasswordError);
