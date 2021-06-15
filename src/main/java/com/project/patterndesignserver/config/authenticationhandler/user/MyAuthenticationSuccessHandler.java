@@ -1,10 +1,12 @@
 package com.project.patterndesignserver.config.authenticationhandler.user;
 
+import com.google.gson.JsonObject;
 import com.project.patterndesignserver.mapper.sys.UserLoginLogMapper;
 import com.project.patterndesignserver.model.member.User;
 import com.project.patterndesignserver.model.sys.UserLoginLog;
 import com.project.patterndesignserver.util.IpUtil;
 import com.project.patterndesignserver.util.JwtTokenUtil;
+import com.project.patterndesignserver.util.result.Response;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -54,8 +56,14 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
             System.out.println("getValue:"+preToken);
             response.addHeader(JwtTokenUtil.TOKEN_HEADER,JwtTokenUtil.TOKEN_PREFIX+token);
             response.setContentType("application/json;charset=utf-8");
+
+            Response rmsg = new Response();
             PrintWriter out = response.getWriter();
-            out.write("登陆成功");
+            JsonObject JObject = new JsonObject();
+            JObject.addProperty("rspCode",rmsg.getRspCode());
+            JObject.addProperty("rspMsg",rmsg.getRspMsg());
+            JObject.addProperty("username",user.getUsername());
+            out.write(JObject.toString());
             out.flush();
             out.close();
         }
