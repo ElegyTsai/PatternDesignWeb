@@ -58,6 +58,7 @@ public class UserServiceImpl extends BaseController implements UserService{
                 //设定账户基本信息
                 user.setCreateTime(TimeUtil.getCurrentTime());
                 user.setLastModify(TimeUtil.getCurrentTime());
+                user.setEnabled(true);
                 user.setActive(false);
                 BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
                 user.setPassword(encoder.encode(user.getPassword()));
@@ -193,6 +194,7 @@ public class UserServiceImpl extends BaseController implements UserService{
             user.setCreateTime(TimeUtil.getCurrentTime());
             user.setLastModify(TimeUtil.getCurrentTime());
             user.setActive(true);
+            user.setEnabled(true);
             user.setId(UUIDUtil.getUUIDOfNumber());
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             user.setPassword(encoder.encode(user.getPassword()));

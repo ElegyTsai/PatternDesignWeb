@@ -17,12 +17,12 @@ public class UserSecurityService implements UserDetailsService {
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException{
         System.out.println("load user:"+name);
         User user = userMapper.selectUserByUsername(name);
-//        if(user == null){
+        if(user == null){
 //            User emailUser = userMapper.selectUserByEmail(name);
 //            if(emailUser == null){
                 User mobileUser = userMapper.selectUserByMobile(name);
                 if(mobileUser == null){
-                    throw new UsernameNotFoundException("手机不存在");
+                    throw new UsernameNotFoundException("4012");
                 }
                 else{
                     user = mobileUser;
@@ -31,7 +31,7 @@ public class UserSecurityService implements UserDetailsService {
 //            else{
 //                user = emailUser;
 //            }
-//        }
+        }
         return user;
     }
 }

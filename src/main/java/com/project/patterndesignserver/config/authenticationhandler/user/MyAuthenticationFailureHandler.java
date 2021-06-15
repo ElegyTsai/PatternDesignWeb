@@ -9,12 +9,15 @@ import com.project.patterndesignserver.util.result.ExceptionMsg;
 import com.project.patterndesignserver.util.result.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
+import com.google.gson.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,7 +35,7 @@ public class MyAuthenticationFailureHandler extends SimpleUrlAuthenticationFailu
         public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                 AuthenticationException e) throws IOException,SecurityException{
             request.setCharacterEncoding("UTF-8");
-            String username = request.getParameter("mobile");
+            String username = request.getParameter("uname");
             System.out.println("Authentication fail");
             UserLoginLog loginRecord = new UserLoginLog();
             loginRecord.setLoginip(IpUtil.getIpAddr(request));
@@ -41,11 +44,24 @@ public class MyAuthenticationFailureHandler extends SimpleUrlAuthenticationFailu
             loginRecord.setUsername(username);
             loginRecord.setWay(1); // web登陆
             userLoginLogMapper.saveLog(loginRecord);
+            Response rmsg ;
+            System.out.println(e.getMessage());
+            if(e instanceof UsernameNotFoundException){
+                rmsg = new Response(ExceptionMsg.UserNotExisted);
+            }else if (e instanceof LockedException) {
+                rmsg = new Response(ExceptionMsg.UserDiabled);
+            }
+            else{
+                    rmsg = new Response(ExceptionMsg.PasswordError);
+            }
+
+            JsonObject JObject = new JsonObject();
+            JObject.addProperty("rspCode",rmsg.getRspCode());
+            JObject.addProperty("rspMsg",rmsg.getRspMsg());
 
             response.setContentType("application/json;charset=utf-8");
             PrintWriter out = response.getWriter();
-            Response rep = new Response(ExceptionMsg.MobileNotExisted);
-            out.write("登陆失败，用户名或密码错误");
+            out.write(JObject.toString());
             out.flush();
             out.close();
         }

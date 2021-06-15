@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -47,7 +48,7 @@ public class SecurityConfig {
 //            http.authorizeRequests(authorizedRequests -> authorizedRequests.anyRequest().permitAll());
 
             http//.antMatcher("/admin/**")
-                    .formLogin().usernameParameter("uname").passwordParameter("password").loginProcessingUrl("api/login/process")
+                    .formLogin().usernameParameter("uname").passwordParameter("password").loginProcessingUrl("/api/login/process")
                     .successHandler(myAuthenticationSuccessHandler).failureHandler(myAuthenticationFailureHandler)
                     .and()
 //                    .antMatcher("/home/login")
@@ -77,9 +78,19 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-        @Override
-        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(service()).passwordEncoder(passwordEncoder());
+        @Bean
+        public DaoAuthenticationProvider authenticationProvider() {
+            DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+            provider.setHideUserNotFoundExceptions(false);
+            provider.setUserDetailsService(service());
+            provider.setPasswordEncoder(passwordEncoder());
+            return provider;
         }
+        //因为有上面的重新注入的Bean 所以这个不需要了
+//        @Override
+//        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.authenticationProvider(customAu)
+//            .userDetailsService(service()).passwordEncoder(passwordEncoder());
+//        }
     }
 }
