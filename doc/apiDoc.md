@@ -13,7 +13,7 @@
 
 
 ### URI scheme
-*域名* : localhost:8080  
+*域名* : localhost:8081  
 *基础路径* : /
 
 
@@ -35,7 +35,7 @@ User Controller
 <a name="getcodeusingget"></a>
 #### 获取手机验证码
 ```
-GET /home/getCode
+GET /api/home/getCode
 ```
 
 
@@ -69,7 +69,7 @@ GET /home/getCode
 
 ###### 请求 path
 ```
-/home/getCode
+/api/home/getCode
 ```
 
 
@@ -95,12 +95,12 @@ json :
 <a name="registerusingpost"></a>
 #### 手机用户注册
 ```
-POST /home/register/mobile
+POST /api/home/register/mobile
 ```
 
 
 ##### 说明
-只能是POST,其他值保持空缺，实际上只需要Mobile,username,password,validationCode这几个属性
+只能是POST,其他值保持空缺，实际上只需要Mobile,username,password,validationCode这几个属性，如果注册成功，还会额外返回一个token用于后续登陆
 
 
 ##### 参数
@@ -175,7 +175,7 @@ POST /home/register/mobile
 
 ###### 请求 path
 ```
-/home/register/mobile
+/api/home/register/mobile
 ```
 
 

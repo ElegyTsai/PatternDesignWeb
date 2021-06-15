@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 @Controller
-@RequestMapping("admin/user")
+@RequestMapping("api/admin/user")
 public class SysUserController {
 
     @Autowired

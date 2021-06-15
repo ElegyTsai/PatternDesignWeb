@@ -22,13 +22,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 
 @Controller
-@RequestMapping("home")
+@RequestMapping("api/home")
 public class UserController extends BaseController {
     @Autowired
     UserMapper userMapper;
@@ -91,8 +92,8 @@ public class UserController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/register/mobile",method = RequestMethod.POST)
     @ApiOperation(value = "手机用户注册",tags = {"注册","user-controller"},notes = "只能是POST,其他值保持空缺，" +
-            "实际上只需要Mobile,username,password,validationCode这几个属性")
-    public Response register(User user){
-        return userService.registerByMobile(user);
+            "实际上只需要Mobile,username,password,validationCode这几个属性，如果注册成功，还会额外返回一个token用于后续登陆")
+    public Response register(User user, HttpServletResponse response){
+        return userService.registerByMobile(user,response);
     }
 }

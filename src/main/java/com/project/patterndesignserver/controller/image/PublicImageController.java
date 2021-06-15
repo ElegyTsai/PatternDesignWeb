@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Controller
-@RequestMapping("img/public")
+@RequestMapping("api/img/public")
 public class PublicImageController {
     @Autowired
     SysImageService sysImageService;

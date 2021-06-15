@@ -30,7 +30,7 @@ public class GenerateMarkdownBySwagger {
                 .withoutInlineSchema()
                 .build();
 
-        Swagger2MarkupConverter.from(new URL("http://localhost:8080/v2/api-docs"))
+        Swagger2MarkupConverter.from(new URL("http://localhost:8081/v2/api-docs"))
                 .withConfig(config)
                 .build()
                 .toFile(Paths.get("./doc/apiDoc")); //生成的文件在本项目中的路径
