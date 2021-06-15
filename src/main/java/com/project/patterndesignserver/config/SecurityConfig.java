@@ -47,7 +47,7 @@ public class SecurityConfig {
 //            http.authorizeRequests(authorizedRequests -> authorizedRequests.anyRequest().permitAll());
 
             http//.antMatcher("/admin/**")
-                    .formLogin().usernameParameter("uname").passwordParameter("pwd").loginProcessingUrl("api/login/process")
+                    .formLogin().usernameParameter("mobile").passwordParameter("password").loginProcessingUrl("api/login/process")
                     .successHandler(myAuthenticationSuccessHandler).failureHandler(myAuthenticationFailureHandler)
                     .and()
 //                    .antMatcher("/home/login")
