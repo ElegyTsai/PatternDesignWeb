@@ -56,10 +56,10 @@ public class PublicImageDBTest {
 
     @Test
     public void queryTag(){
-        List<PublicImage> publicImages =publicImageMapper.queryByTag("bird");
-        for(PublicImage image : publicImages){
-            System.out.println(image.toString());
-        }
+//        List<PublicImage> publicImages =publicImageMapper.queryByTag("bird");
+//        for(PublicImage image : publicImages){
+//            System.out.println(image.toString());
+//        }
 
     }
 

@@ -9,6 +9,7 @@ import com.project.patterndesignserver.model.member.User;
 import com.project.patterndesignserver.util.MD5Util;
 import com.project.patterndesignserver.util.result.Response;
 import com.project.patterndesignserver.util.result.Result;
+import io.swagger.annotations.Api;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +27,7 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 
 @Service
 public class UserImageServiceImpl extends BaseController implements UserImageService {
@@ -82,7 +84,7 @@ public class UserImageServiceImpl extends BaseController implements UserImageSer
             image.setUserId(user.getId());
             userImageMapper.saveOwner(image);
             Result<UserImageResult> result = new Result<>();
-            result.setCode(200);
+            result.setCode("200");
             UserImageResult imageResult = new UserImageResult();
             imageResult.setGroup(image.getMyGroup());
             imageResult.setUUID(newFileName);
@@ -95,7 +97,7 @@ public class UserImageServiceImpl extends BaseController implements UserImageSer
         catch (Exception e){
             e.printStackTrace();
             Result<String> result = new Result<>();
-            result.setCode(400);
+            result.setCode("400");
             result.setMsg("上传失败");
             return result;
         }
@@ -108,19 +110,19 @@ public class UserImageServiceImpl extends BaseController implements UserImageSer
         try{
             if(userImageMapper.deleteRelation(UUID,userId)==0){
                 Result<String> result = new Result<>();
-                result.setCode(401);
+                result.setCode("401");
                 result.setMsg("删除失败,不存在该文件或无权访问");
                 return result;
             }
             Result<String> result = new Result<>();
-            result.setCode(200);
+            result.setCode("200");
             result.setMsg("删除成功");
             return result;
         }
         catch (Exception e){
             e.printStackTrace();
             Result<String> result = new Result<>();
-            result.setCode(400);
+            result.setCode("400");
             result.setMsg("删除失败");
             return result;
         }
@@ -143,13 +145,13 @@ public class UserImageServiceImpl extends BaseController implements UserImageSer
             }
             Result<List> result=new Result<List>();
             result.setMsg("查询成功");
-            result.setCode(200);
+            result.setCode("200");
             result.setData(imageResults);
             return result;
         }catch (Exception e){
             e.printStackTrace();
             Result<String> result = new Result<>();
-            result.setCode(400);
+            result.setCode("400");
             result.setMsg("查询失败");
             return result;
         }
