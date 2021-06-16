@@ -65,32 +65,18 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         UsernamePasswordAuthenticationToken authentication = null;
         String uname;
         String loginInfo;
-        int state=1;
+        int state;
         try{
             uname=JwtTokenUtil.getUsername(tokenValue);
+            if(JwtTokenUtil.isExpiration(tokenValue)){
+                System.out.println("expired");
+                throw new Exception();
+            }
+            authentication = getAuthentication(tokenHeader);
+            state=1;
         }catch (Exception e){
             uname = "unknown";
-        }
-
-        try{
-            //System.out.println("verifying token");
-            System.out.println(JwtTokenUtil.getUsername(tokenValue));
-            String preToken = stringRedisTemplate.opsForValue().get(JwtTokenUtil.getUsername(tokenValue));
-            if(!tokenValue.equals(preToken)){
-                SecurityContextHolder.clearContext();
-                state = 0;
-                loginInfo="token验证失败";
-            }else{
-                authentication=getAuthentication(tokenHeader);
-                loginInfo="token验证成功";
-                state = 1;
-            }
-
-        }catch (Exception e){
-//            e.printStackTrace();
-            logger.error(e.getMessage());
-            state = 0;
-            loginInfo="用户token不存在或已失效";
+            state=0;
         }
 
         UserLoginLog loginRecord = new UserLoginLog();
