@@ -54,7 +54,7 @@ public class SecurityConfig {
 //                    .antMatcher("/home/login")
 //                    .userDetailsService(service())
                     .authorizeRequests()
-                    .antMatchers("/api/home/login").permitAll()
+                    .antMatchers("/api/login/process").permitAll()
                     .antMatchers("/api/admin/login").permitAll()
                     .antMatchers("/api/home/logout").permitAll()
                     .antMatchers("/api/admin/user/**").access("hasRole('ADMIN')")
