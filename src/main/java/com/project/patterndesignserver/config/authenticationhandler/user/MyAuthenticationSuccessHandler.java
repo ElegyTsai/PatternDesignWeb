@@ -46,9 +46,13 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
             loginRecord.setWay(1); // web登陆
             userLoginLogMapper.saveLog(loginRecord);
             //需要一个跳转页面
-
-            String token = JwtTokenUtil.crateToken(user.getId()+"",user.roleToString(),request.getParameter("isRememberMe").equals("true"));
-            stringRedisTemplate.opsForValue().set(user.getId()+"",token,request.getParameter("isRememberMe").equals("true")?7:1, TimeUnit.DAYS);
+            boolean isRemember;
+            if(request.getParameter("isRememberMe")!=null &&request.getParameter("isRememberMe").equals("true")){
+                isRemember = true;
+            }
+            else isRemember = false;
+            String token = JwtTokenUtil.crateToken(user.getId()+"",user.roleToString(),isRemember);
+            stringRedisTemplate.opsForValue().set(user.getId()+"",token,isRemember?7:1, TimeUnit.DAYS);
             stringRedisTemplate.opsForValue().set("user_"+user.getId(),JSONObject.fromObject(user).toString());
             System.out.println("key:"+user.getMobile());
             System.out.println("value:"+token);
