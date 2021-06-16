@@ -1,5 +1,6 @@
 package com.project.patterndesignserver.service.image;
 
+import com.project.patterndesignserver.model.content.image.PublicImageResult;
 import com.project.patterndesignserver.util.result.Response;
 import com.project.patterndesignserver.util.result.Result;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,9 +19,11 @@ public interface SysImageService {
 
     public List<String> queryImageByTagsOr(List<String> tags);
 
-    public byte[] getImage(String url) throws IOException;
+    public byte[] getImage(String tag,String url) throws IOException;
 
-    public byte[] getNail(String url) throws IOException;
+    public byte[] getNail(String tag,String url) throws IOException;
+
+    public List<PublicImageResult> queryTag(String tag);
 
 
 }

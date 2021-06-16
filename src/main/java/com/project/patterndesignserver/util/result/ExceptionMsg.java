@@ -15,7 +15,9 @@ public enum ExceptionMsg {
     UserNotExisted("4014","账户未注册"),
     UserDisabled("4015","用户被锁定"),
     KeyWrong("4013","签名错误"),
-    LackInfo("4020","登陆信息缺失")
+    LackInfo("4020","登陆信息缺失"),
+    UploadFailed("4101","上传失败"),
+    SuffixError("4102","文件格式错误")
     ;
     private String code;
     private String msg;

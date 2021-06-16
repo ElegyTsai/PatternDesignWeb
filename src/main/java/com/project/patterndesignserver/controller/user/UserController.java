@@ -29,6 +29,7 @@ import java.util.List;
 
 
 @Controller
+//@Api(tags = "用户系统-用户管理")
 @RequestMapping("api/home")
 public class UserController extends BaseController {
     @Autowired
@@ -40,12 +41,13 @@ public class UserController extends BaseController {
     @Autowired
     UserService userService;
 
-    @ApiIgnore
+
     @ResponseBody
     @RequestMapping(value = "test",method = RequestMethod.GET)
-    public String test(){
-        return result().toString();
+    public ExceptionMsg test(){
+        return ExceptionMsg.SUCCESS;
     }
+
 
     @ApiIgnore
     @ResponseBody
