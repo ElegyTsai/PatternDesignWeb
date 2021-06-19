@@ -16,6 +16,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+
+
 @Service
 public class LatestUsedMaterialsServiceImpl implements LatestUsedMaterialsService {
     @Autowired
@@ -60,5 +62,13 @@ public class LatestUsedMaterialsServiceImpl implements LatestUsedMaterialsServic
         res = new Result<>();
         res.setData(queryResult);
         return res;
+    }
+
+    @Override
+    public void saveAll() {
+        Set<String> outUser = stringRedisTemplate.opsForZSet().range("materialLogCache",0, -1);
+        for(String userId : outUser){
+            MaterialLogUtil.writeToSQL(userId,stringRedisTemplate,materialLogMapper);
+        }
     }
 }

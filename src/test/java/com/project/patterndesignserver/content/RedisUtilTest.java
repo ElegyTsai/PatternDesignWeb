@@ -52,7 +52,7 @@ public class RedisUtilTest {
     @Test
     public void test7(){
         System.out.println(stringRedisTemplate.opsForZSet().size("materialLogCache"));
-        MaterialLogUtil.cleanCache(stringRedisTemplate,materialLogMapper);
+//        MaterialLogUtil.cleanCache(stringRedisTemplate,materialLogMapper);
         System.out.println(stringRedisTemplate.opsForZSet().size("materialLogCache"));
 //        MaterialLogUtil.writeToSQL(""+1,stringRedisTemplate,materialLogMapper);
     }

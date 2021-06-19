@@ -41,7 +41,7 @@ public class MaterialLogUtil {
         }
         LinkedList<String> ret = new LinkedList<>();
         for(String url :queryResult){
-            ret.addFirst(url);
+            ret.addLast(url);
         }
         return ret;
     }

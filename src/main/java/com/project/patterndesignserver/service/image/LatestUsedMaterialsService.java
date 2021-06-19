@@ -8,4 +8,6 @@ public interface LatestUsedMaterialsService {
     public Result<String> add(String url);
 
     public Result<List> query(int rank);
+
+    public void saveAll();
 }
