@@ -19,6 +19,7 @@
 
 ### 标签
 
+* latest-used-material-controller : Latest Used Material Controller
 * user-controller : User Controller
 * user-image-controller : User Image Controller
 * 公共素材管理 : Public Image Controller
@@ -28,6 +29,11 @@
 
 <a name="paths"></a>
 ## 资源
+
+<a name="latest-used-material-controller_resource"></a>
+### Latest-used-material-controller
+Latest Used Material Controller
+
 
 <a name="user-controller_resource"></a>
 ### User-controller
@@ -253,7 +259,7 @@ GET /api/home/test
 
 |HTTP代码|说明|类型|
 |---|---|---|
-|**200**|OK|enum (FAIL, SUCCESS, UserNotFound, UsernameNotFound, UsernameUsed, PhoneUsed, CodeError, EmailUsed, EmailError, TimeOut, PasswordError, UserNotExisted, UserDisabled, KeyWrong, LackInfo, UploadFailed, SuffixError)|
+|**200**|OK|enum (FAIL, SUCCESS, UserNotFound, UsernameNotFound, UsernameUsed, PhoneUsed, CodeError, UserNotAuthenticated, EmailUsed, EmailError, TimeOut, PasswordError, UserNotExisted, UserDisabled, KeyWrong, LackInfo, UploadFailed, SuffixError)|
 |**401**|Unauthorized|无内容|
 |**403**|Forbidden|无内容|
 |**404**|Not Found|无内容|
@@ -637,6 +643,7 @@ get方法，需要tag和图片的UUID用byte数组传递图片
 
 ##### 生成
 
+* `image/png`
 * `image/jpeg`
 
 
@@ -879,6 +886,16 @@ json :
 |---|---|---|
 |**code**  <br>*可选*|**样例** : `"string"`|string|
 |**data**  <br>*可选*|**样例** : `"object"`|object|
+|**msg**  <br>*可选*|**样例** : `"string"`|string|
+
+
+<a name="c1781e5e2dbb907f97761770e9a345e6"></a>
+### Result«List»
+
+|名称|说明|类型|
+|---|---|---|
+|**code**  <br>*可选*|**样例** : `"string"`|string|
+|**data**  <br>*可选*|**样例** : `[ "object" ]`|< object > array|
 |**msg**  <br>*可选*|**样例** : `"string"`|string|
 
 
