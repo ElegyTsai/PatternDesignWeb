@@ -1,6 +1,8 @@
 package com.project.patterndesignserver.service.image;
 
+import com.project.patterndesignserver.mapper.content.material.MaterialLogMapper;
 import com.project.patterndesignserver.util.TimeUtil;
+import com.project.patterndesignserver.util.redis.MaterialLogUtil;
 import com.project.patterndesignserver.util.result.ExceptionMsg;
 import com.project.patterndesignserver.util.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ public class LatestUsedMaterialsServiceImpl implements LatestUsedMaterialsServic
     @Autowired
     StringRedisTemplate stringRedisTemplate;
 
+    @Autowired
+    MaterialLogMapper materialLogMapper;
     @Override
     public Result<String> add(String url) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
@@ -29,13 +33,10 @@ public class LatestUsedMaterialsServiceImpl implements LatestUsedMaterialsServic
             res.setData("用户未登陆，记录失败");
             return res;
         }
-        String redisKey = "mLog_"+userId;
-        stringRedisTemplate.opsForZSet().add(redisKey,url, TimeUtil.getCurrentTime() *-1.0);
-        int maxLog = 100; // 缓存100个
-        int showLog = 50;
-        if(stringRedisTemplate.opsForZSet().size(redisKey)==maxLog){
-            stringRedisTemplate.opsForZSet().removeRange(redisKey,50,-1);
+        if(!MaterialLogUtil.isInCache(userId,stringRedisTemplate)){
+            MaterialLogUtil.readToCache(userId,stringRedisTemplate,materialLogMapper);
         }
+        MaterialLogUtil.addToCache(userId,url,stringRedisTemplate);
         res = new Result<>();
         res.setData("添加成功");
         return res;
@@ -51,22 +52,13 @@ public class LatestUsedMaterialsServiceImpl implements LatestUsedMaterialsServic
             res = new Result<>(ExceptionMsg.UserNotAuthenticated);
             return res;
         }
-        String redisKey = "mLog_"+userId;
-        if(stringRedisTemplate.opsForZSet().size(redisKey)==0){
-            res = new Result<>();
-            res.setMsg("无数据");
+        if(!MaterialLogUtil.isInCache(userId,stringRedisTemplate)){
+            MaterialLogUtil.readToCache(userId,stringRedisTemplate,materialLogMapper);
         }
-        Set<String> queryResult;
-        if(rank>stringRedisTemplate.opsForZSet().size(redisKey)){
-            queryResult = stringRedisTemplate.opsForZSet().range(redisKey,0,-1);
-        }else{
-            queryResult = stringRedisTemplate.opsForZSet().range(redisKey,0,rank-1);
-        }
-        for(String s : queryResult){
-            data.add(s);
-        }
+        List<String> queryResult;
+        queryResult = MaterialLogUtil.readFromCache(userId,rank,stringRedisTemplate);
         res = new Result<>();
-        res.setData(data);
+        res.setData(queryResult);
         return res;
     }
 }

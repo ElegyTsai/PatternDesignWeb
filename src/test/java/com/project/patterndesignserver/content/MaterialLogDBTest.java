@@ -22,8 +22,8 @@ public class MaterialLogDBTest {
         List<MaterialLog> logs = new ArrayList<>();
         for(int i = 0;i<10;i++){
             MaterialLog log = new MaterialLog();
-            log.setUser_Id(1);
-            log.setUrl("/test/user"+i);
+            log.setUser_Id(2);
+            log.setUrl("/test2/user1/"+i);
             log.setTimeOfLastUsing(System.currentTimeMillis());
             materialLogMapper.insertLog(log);
             logs.add(log);
