@@ -20,7 +20,7 @@ public class LatestUsedMaterialController {
     @Autowired
     LatestUsedMaterialsService latestUsedMaterialsService;
 
-    @ApiOperation(value = "添加一个最近使用的素材",tags = {"素材使用记录"},notes = "需要带着token才能记录用户身份，但是这个api本身不需要授权" +
+    @ApiOperation(value = "添加一个最近使用的素材",tags = {"素材使用记录","latest-used-material-controller"},notes = "需要带着token才能记录用户身份，但是这个api本身不需要授权" +
             "授权，未登陆可以访问但是不会被记录，只需要get/post一个url即可")
     @RequestMapping(value = "/add",method = RequestMethod.PUT)
     @ResponseBody
@@ -29,7 +29,7 @@ public class LatestUsedMaterialController {
         return latestUsedMaterialsService.add(url);
     }
 
-    @ApiOperation(value = "返回最近使用的素材",tags = {"素材使用记录"},notes = "需要带着token才能找到，但是这个api本身不需要，" +
+    @ApiOperation(value = "返回最近使用的素材",tags = {"素材使用记录","latest-used-material-controller"},notes = "需要带着token才能找到，但是这个api本身不需要，" +
             "授权，未登陆会报错，返回的列表有顺序，最近使用在前面")
     @RequestMapping(value = "/query",method = RequestMethod.GET)
     @ResponseBody
@@ -37,7 +37,7 @@ public class LatestUsedMaterialController {
         return latestUsedMaterialsService.query(rank);
     }
 
-    @ApiOperation(value = "保存缓存中的所有数据到Mysql",tags = {"素材使用记录"},notes = "只是用于方便调试持久化的接口，无实际作用")
+    @ApiOperation(value = "保存缓存中的所有数据到Mysql",tags = {"素材使用记录","latest-used-material-controller"},notes = "只是用于方便调试持久化的接口，无实际作用")
     @RequestMapping(value = "/save",method = RequestMethod.GET)
     @ResponseBody
     public void save(){

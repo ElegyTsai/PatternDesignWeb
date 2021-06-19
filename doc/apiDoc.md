@@ -35,6 +35,172 @@
 Latest Used Material Controller
 
 
+<a name="addusingput"></a>
+#### 添加一个最近使用的素材
+```
+PUT /api/material/log/add
+```
+
+
+##### 说明
+需要带着token才能记录用户身份，但是这个api本身不需要授权授权，未登陆可以访问但是不会被记录，只需要get/post一个url即可
+
+
+##### 参数
+
+|类型|名称|说明|类型|
+|---|---|---|---|
+|**Query**|**url**  <br>*可选*|url|string|
+
+
+##### 响应
+
+|HTTP代码|说明|类型|
+|---|---|---|
+|**200**|OK|[Result«string»](#e249bf1902de7f75aaed353ffea96339)|
+|**201**|Created|无内容|
+|**401**|Unauthorized|无内容|
+|**403**|Forbidden|无内容|
+|**404**|Not Found|无内容|
+
+
+##### 消耗
+
+* `application/json`
+
+
+##### 生成
+
+* `*/*`
+
+
+##### HTTP请求示例
+
+###### 请求 path
+```
+/api/material/log/add
+```
+
+
+###### 请求 query
+```
+json :
+{
+  "url" : "string"
+}
+```
+
+
+##### HTTP响应示例
+
+###### 响应 200
+```
+json :
+{
+  "code" : "string",
+  "data" : "string",
+  "msg" : "string"
+}
+```
+
+
+<a name="queryusingget"></a>
+#### 返回最近使用的素材
+```
+GET /api/material/log/query
+```
+
+
+##### 说明
+需要带着token才能找到，但是这个api本身不需要，授权，未登陆会报错，返回的列表有顺序，最近使用在前面
+
+
+##### 参数
+
+|类型|名称|说明|类型|默认值|
+|---|---|---|---|---|
+|**Query**|**rank**  <br>*可选*|rank|integer (int32)|`50`|
+
+
+##### 响应
+
+|HTTP代码|说明|类型|
+|---|---|---|
+|**200**|OK|[Result«List»](#c1781e5e2dbb907f97761770e9a345e6)|
+|**401**|Unauthorized|无内容|
+|**403**|Forbidden|无内容|
+|**404**|Not Found|无内容|
+
+
+##### 生成
+
+* `*/*`
+
+
+##### HTTP请求示例
+
+###### 请求 path
+```
+/api/material/log/query
+```
+
+
+###### 请求 query
+```
+json :
+{
+  "rank" : 0
+}
+```
+
+
+##### HTTP响应示例
+
+###### 响应 200
+```
+json :
+{
+  "code" : "string",
+  "data" : [ "object" ],
+  "msg" : "string"
+}
+```
+
+
+<a name="saveusingget"></a>
+#### 保存缓存中的所有数据到Mysql
+```
+GET /api/material/log/save
+```
+
+
+##### 说明
+只是用于方便调试持久化的接口，无实际作用
+
+
+##### 响应
+
+|HTTP代码|说明|类型|
+|---|---|---|
+|**200**|OK|无内容|
+|**401**|Unauthorized|无内容|
+|**403**|Forbidden|无内容|
+|**404**|Not Found|无内容|
+
+
+##### 生成
+
+* `*/*`
+
+
+##### HTTP请求示例
+
+###### 请求 path
+```
+/api/material/log/save
+```
+
+
 <a name="user-controller_resource"></a>
 ### User-controller
 User Controller
