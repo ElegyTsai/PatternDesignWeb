@@ -35,7 +35,8 @@ public class SysImageServiceImpl extends BaseController implements SysImageServi
     private String urlPrefix;
     @Value("${image.nail.url}")
     private String nailUrlPrefix;
-
+    @Value("${image.separator}")
+    private String separator;
     @Override
     public Result<String> uploadImage(MultipartFile multipartFile, String tag, String permission){
 
@@ -48,7 +49,7 @@ public class SysImageServiceImpl extends BaseController implements SysImageServi
         }
         image.setTag(tag);
         image.setPermission(permission);
-        String newPath = path+tag+"/";
+        String newPath = path+tag+separator;
         String newFileName = UUID.randomUUID().toString().replace("-","")+suffix;
         System.out.println(newFileName);
         try{
@@ -79,7 +80,7 @@ public class SysImageServiceImpl extends BaseController implements SysImageServi
             publicImageMapper.addImage(image);
 
             Result<String> result = new Result<>();
-            result.setData(urlPrefix+tag+"/"+newFileName);
+            result.setData(urlPrefix+tag+separator+newFileName);
 
             return result;
         }
@@ -132,7 +133,7 @@ public class SysImageServiceImpl extends BaseController implements SysImageServi
 
     @Override
     public byte[] getImage(String tag,String url) throws IOException {
-        File file = new File(path+tag+"/"+url);
+        File file = new File(path+tag+separator+url);
         FileInputStream inputStream = new FileInputStream(file);
         byte [] bytes = new byte[inputStream.available()];
         inputStream.read(bytes,0, inputStream.available());
@@ -141,7 +142,7 @@ public class SysImageServiceImpl extends BaseController implements SysImageServi
 
     @Override
     public byte[] getNail(String tag,String url) throws IOException {
-        File file = new File(path+tag+"/th_"+url);
+        File file = new File(path+tag+separator+"th_"+url);
         FileInputStream inputStream = new FileInputStream(file);
         byte [] bytes = new byte[inputStream.available()];
         inputStream.read(bytes,0, inputStream.available());
@@ -157,8 +158,8 @@ public class SysImageServiceImpl extends BaseController implements SysImageServi
 //            String category = image.getTag();
             String fileName = image.getImageName();
             result.setUUID(fileName);
-            result.setImageUrl(urlPrefix+tag+"/"+fileName);
-            result.setThumbNailUrl(nailUrlPrefix+tag+"/"+fileName);
+            result.setImageUrl(urlPrefix+tag+separator+fileName);
+            result.setThumbNailUrl(nailUrlPrefix+tag+separator+fileName);
             results.add(result);
         }
         return results;

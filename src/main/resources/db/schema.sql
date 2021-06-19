@@ -98,3 +98,11 @@ CREATE TABLE IF NOT EXISTS `relationOfUserImage`(
     CONSTRAINT `image_id` FOREIGN KEY (`image_id`) REFERENCES `userImage` (`id`),
     PRIMARY KEY (`id`)
 )ENGINE = InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `latestUsedMaterialLog`(
+    `logId` BIGINT NOT NULL AUTO_INCREMENT,
+    `timeOfLastUsing` VARCHAR(50) DEFAULT NULL,
+    `user_id` INT DEFAULT NULL,
+    `materialUrl` VARCHAR(250) DEFAULT NULL,
+    PRIMARY KEY (`logId`)
+)ENGINE = InnoDB DEFAULT CHARSET=utf8;
