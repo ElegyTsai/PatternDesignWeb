@@ -17,4 +17,13 @@ public class JsonUtilTest {
         PublicImageResult object2 = JsonStringUtil.getObjectFromJson(json,PublicImageResult.class);
         System.out.println(json);
     }
+    @Test
+    public void test2(){
+        PublicImageResult object = new PublicImageResult();
+        object.setUUID("123123123");
+//        String res = JSONObject.fromObject(user1).toString();
+        String json =  JsonStringUtil.<PublicImageResult>toJsonString(object);
+        PublicImageResult object2 = JsonStringUtil.getObjectFromJson(json,PublicImageResult.class);
+        System.out.println(json);
+    }
 }
