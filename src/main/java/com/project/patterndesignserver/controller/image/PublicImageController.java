@@ -45,7 +45,7 @@ public class PublicImageController {
 
     @ApiOperation(value = "查看高清图片",tags = {"公共素材管理"},notes = "get方法，需要tag和图片的UUID" +
             "用byte数组传递图片")
-    @RequestMapping(value = "/getImage/{tag}/{url}",method = RequestMethod.GET,produces = MediaType.IMAGE_JPEG_VALUE)
+    @RequestMapping(value = "/getImage/{tag}/{url}",method = RequestMethod.GET,produces = {MediaType.IMAGE_JPEG_VALUE,MediaType.IMAGE_PNG_VALUE})
     @ResponseBody
     public byte[] getImage(@PathVariable String tag,@PathVariable String url,HttpServletResponse response) throws IOException{
         try{

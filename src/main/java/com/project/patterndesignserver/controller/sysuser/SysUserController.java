@@ -61,6 +61,7 @@ public class SysUserController {
     @ResponseBody
     public String whoIam(){
         String username =SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        System.out.println("username: "+username);
         User user = (User) JSONObject.toBean(JSONObject.fromObject(stringRedisTemplate.opsForValue().get("user_"+username)),User.class);
 //        User user =(User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return  user.getId()+"";

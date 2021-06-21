@@ -26,7 +26,8 @@ public class Swagger2Config {
                 .apiInfo(apiInfo())
                 .select()
                 .apis(basePackage("com.project.patterndesignserver.controller.user"+
-                        splitor+"com.project.patterndesignserver.controller.image"))
+                        splitor+"com.project.patterndesignserver.controller.image" +
+                        splitor+"com.project.patterndesignserver.controller.material"))
                 .paths(PathSelectors.any())
                 .build();
     }

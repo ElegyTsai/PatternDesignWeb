@@ -8,6 +8,7 @@ public enum ExceptionMsg {
     UsernameUsed("4003","用户名已被使用"),
     PhoneUsed("4004","手机号已被使用"),
     CodeError("4005","验证码错误或过期"),
+    UserNotAuthenticated("4006","用户未登陆"),
     EmailUsed("4010","邮箱已被使用"),
     EmailError("4011","邮箱错误"),
     TimeOut("4012","签名过期"),
