@@ -57,7 +57,7 @@ public class SecurityConfig {
                     .antMatchers("/api/login/process").permitAll()
                     .antMatchers("/api/admin/login").permitAll()
                     .antMatchers("/api/home/logout").permitAll()
-                    .antMatchers("/api/admin/user/**").access("hasRole('ADMIN')")
+                    .antMatchers("/api/admin/user/**").access("hasRole('USER')")
                     .anyRequest().permitAll()
                     .and()
                     .addFilter(new JWTAuthorizationFilter(authenticationManager(),stringRedisTemplate,userLoginLogMapper))

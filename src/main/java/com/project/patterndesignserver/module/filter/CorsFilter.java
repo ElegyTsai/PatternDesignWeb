@@ -1,4 +1,4 @@
-package com.project.patterndesignserver.filter;
+package com.project.patterndesignserver.module.filter;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
