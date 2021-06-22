@@ -11,7 +11,7 @@ public interface PublicImageMapper {
     PublicImage selectImageById(long id);
 
     int addImage(PublicImage publicImage);
-
+    
     int deleteImage(long id);
 
     List<PublicImage> queryByTag (String tag);
