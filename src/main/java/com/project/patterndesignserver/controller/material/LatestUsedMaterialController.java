@@ -21,7 +21,7 @@ public class LatestUsedMaterialController {
     LatestUsedMaterialsService latestUsedMaterialsService;
 
     @ApiOperation(value = "添加一个最近使用的素材",tags = {"素材使用记录","latest-used-material-controller"},notes = "需要带着token才能记录用户身份，但是这个api本身不需要授权" +
-            "授权，未登陆可以访问但是不会被记录，只需要get/post一个url即可")
+            "授权，未登陆可以访问但是不会被记录，只需要put一个url即可")
     @RequestMapping(value = "/add",method = RequestMethod.PUT)
     @ResponseBody
     public Result<String> add(String url){
