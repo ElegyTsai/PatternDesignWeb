@@ -8,6 +8,7 @@ import com.project.patterndesignserver.util.MD5Util;
 import com.project.patterndesignserver.util.result.ExceptionMsg;
 import com.project.patterndesignserver.util.result.Response;
 import com.project.patterndesignserver.util.result.Result;
+import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -51,8 +52,7 @@ public class SysImageServiceImpl extends BaseController implements SysImageServi
         image.setPermission(permission);
         String newPath = path+tag+separator;
         String newFileName = UUID.randomUUID().toString().replace("-","")+suffix;
-        System.out.println(newFileName);
-        System.out.println(newPath);
+
         try{
             //生成缩略图并保存起来
             File file = new File(newPath,newFileName);
@@ -63,21 +63,17 @@ public class SysImageServiceImpl extends BaseController implements SysImageServi
             }
 
             image.setImagePath(newPath+newFileName);
-            BufferedImage bufImage = ImageIO.read(multipartFile.getInputStream());
-            Image thumb = bufImage.getScaledInstance(128,128,Image.SCALE_FAST);
-            File thumbFile = new File(newPath,"th_"+newFileName);
+            multipartFile.transferTo(file);
+//            System.out.println(newFileName);
+//            System.out.println(newPath);
+            Thumbnails.of(newPath+newFileName)
+                    .size(128, 128)
+                    .toFile(newPath+"th_"+newFileName);
 
-            BufferedImage bi = new BufferedImage
-                    (thumb.getWidth(null),thumb.getHeight(null),BufferedImage.TYPE_INT_RGB);
-            Graphics bg = bi.getGraphics();
-            bg.drawImage(thumb, 0, 0, null);
-            bg.dispose();
-            ImageIO.write(bi,newFileName.substring(newFileName.lastIndexOf(".")+1),thumbFile);
             image.setImageName(newFileName);
             image.setAvailable(true);
             image.setThumbnailPath(newPath+"th_"+newFileName);
-            image.setMD5(MD5Util.getMD5(multipartFile.getBytes()));
-            multipartFile.transferTo(file);
+
             publicImageMapper.addImage(image);
 
             Result<String> result = new Result<>();
