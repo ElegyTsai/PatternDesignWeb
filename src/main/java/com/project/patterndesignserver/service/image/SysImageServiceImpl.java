@@ -52,6 +52,7 @@ public class SysImageServiceImpl extends BaseController implements SysImageServi
         String newPath = path+tag+separator;
         String newFileName = UUID.randomUUID().toString().replace("-","")+suffix;
         System.out.println(newFileName);
+        System.out.println(newPath);
         try{
             //生成缩略图并保存起来
             File file = new File(newPath,newFileName);
@@ -80,7 +81,7 @@ public class SysImageServiceImpl extends BaseController implements SysImageServi
             publicImageMapper.addImage(image);
 
             Result<String> result = new Result<>();
-            result.setData(urlPrefix+tag+separator+newFileName);
+            result.setData(urlPrefix+tag+"/"+newFileName);
 
             return result;
         }
@@ -158,8 +159,8 @@ public class SysImageServiceImpl extends BaseController implements SysImageServi
 //            String category = image.getTag();
             String fileName = image.getImageName();
             result.setUUID(fileName);
-            result.setImageUrl(urlPrefix+tag+separator+fileName);
-            result.setThumbNailUrl(nailUrlPrefix+tag+separator+fileName);
+            result.setImageUrl(urlPrefix+tag+"/"+fileName);
+            result.setThumbNailUrl(nailUrlPrefix+tag+"/"+fileName);
             results.add(result);
         }
         return results;
