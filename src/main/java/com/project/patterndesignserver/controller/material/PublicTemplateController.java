@@ -22,7 +22,7 @@ public class PublicTemplateController {
     @Autowired
     PublicTemplateService publicTemplateService;
 
-    @ApiOperation(value = "上传模板",tags = {"模板管理"},notes = "Post方法，thumbnail放缩略图，tag是模板所属的种类" +
+    @ApiOperation(value = "上传模板",tags = {"模板管理","public-template-controller"},notes = "Post方法，thumbnail放缩略图，tag是模板所属的种类" +
             "返回信息为模板的jsonurl和缩略图url,理论上来说只有管理员才能上传，为了便于测试没有添加授权验证")
     @RequestMapping(value = "/upload",method = RequestMethod.POST)
     @ResponseBody
@@ -30,7 +30,7 @@ public class PublicTemplateController {
         return publicTemplateService.upload(thumbnail,tag,jsonText);
     }
 
-    @ApiOperation(value = "查询模板",tags = {"模板管理"},notes = "get方法，用于查找种类下的模板" +
+    @ApiOperation(value = "查询模板",tags = {"模板管理","public-template-controller"},notes = "get方法，用于查找种类下的模板" +
             "返回信息为模板List，里面有jsonurl和缩略图url")
     @RequestMapping(value = "/queryByTag",method = RequestMethod.GET)
     @ResponseBody
@@ -38,7 +38,7 @@ public class PublicTemplateController {
         return publicTemplateService.queryByTag(tag);
     }
 
-    @ApiOperation(value = "获取模板缩略图",tags = {"模板管理"},notes = "get方法，获取模板的缩略图" )
+    @ApiOperation(value = "获取模板缩略图",tags = {"模板管理","public-template-controller"},notes = "get方法，获取模板的缩略图" )
     @RequestMapping(value = "/getNail/{tag}/{fileName}",method = RequestMethod.GET,produces = {MediaType.IMAGE_JPEG_VALUE,MediaType.IMAGE_PNG_VALUE})
     @ResponseBody
     public byte[] getNail(@PathVariable String tag, @PathVariable String fileName, HttpServletResponse response){
@@ -51,7 +51,7 @@ public class PublicTemplateController {
             return null;
         }
     }
-    @ApiOperation(value = "获取模板的json信息",tags = {"模板管理"},notes = "get方法，获取模板的json信息，直接使用发来的url即可" )
+    @ApiOperation(value = "获取模板的json信息",tags = {"模板管理","public-template-controller"},notes = "get方法，获取模板的json信息，直接使用发来的url即可" )
     @RequestMapping(value = "/getJson/{tag}/{fileName}",method = RequestMethod.GET)
     @ResponseBody
     public String getJson(@PathVariable String tag, @PathVariable String fileName, HttpServletResponse response){

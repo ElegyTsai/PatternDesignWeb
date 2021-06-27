@@ -207,6 +207,256 @@ GET /api/material/log/save
 Public Template Controller
 
 
+<a name="getjsonusingget"></a>
+#### 获取模板的json信息
+```
+GET /api/template/getJson/{tag}/{fileName}
+```
+
+
+##### 说明
+get方法，获取模板的json信息，直接使用发来的url即可
+
+
+##### 参数
+
+|类型|名称|说明|类型|
+|---|---|---|---|
+|**Path**|**fileName**  <br>*必填*|fileName|string|
+|**Path**|**tag**  <br>*必填*|tag|string|
+
+
+##### 响应
+
+|HTTP代码|说明|类型|
+|---|---|---|
+|**200**|OK|string|
+|**401**|Unauthorized|无内容|
+|**403**|Forbidden|无内容|
+|**404**|Not Found|无内容|
+
+
+##### 生成
+
+* `*/*`
+
+
+##### HTTP请求示例
+
+###### 请求 path
+```
+/api/template/getJson/string/string
+```
+
+
+##### HTTP响应示例
+
+###### 响应 200
+```
+json :
+"string"
+```
+
+
+<a name="getnailusingget_1"></a>
+#### 获取模板缩略图
+```
+GET /api/template/getNail/{tag}/{fileName}
+```
+
+
+##### 说明
+get方法，获取模板的缩略图
+
+
+##### 参数
+
+|类型|名称|说明|类型|
+|---|---|---|---|
+|**Path**|**fileName**  <br>*必填*|fileName|string|
+|**Path**|**tag**  <br>*必填*|tag|string|
+
+
+##### 响应
+
+|HTTP代码|说明|类型|
+|---|---|---|
+|**200**|OK|string (byte)|
+|**401**|Unauthorized|无内容|
+|**403**|Forbidden|无内容|
+|**404**|Not Found|无内容|
+
+
+##### 生成
+
+* `image/png`
+* `image/jpeg`
+
+
+##### HTTP请求示例
+
+###### 请求 path
+```
+/api/template/getNail/string/string
+```
+
+
+##### HTTP响应示例
+
+###### 响应 200
+```
+json :
+"string"
+```
+
+
+<a name="queryusingget_1"></a>
+#### 查询模板
+```
+GET /api/template/queryByTag
+```
+
+
+##### 说明
+get方法，用于查找种类下的模板返回信息为模板List，里面有jsonurl和缩略图url
+
+
+##### 参数
+
+|类型|名称|说明|类型|
+|---|---|---|---|
+|**Query**|**tag**  <br>*可选*|tag|string|
+
+
+##### 响应
+
+|HTTP代码|说明|类型|
+|---|---|---|
+|**200**|OK|[Result«List»](#c1781e5e2dbb907f97761770e9a345e6)|
+|**401**|Unauthorized|无内容|
+|**403**|Forbidden|无内容|
+|**404**|Not Found|无内容|
+
+
+##### 生成
+
+* `*/*`
+
+
+##### HTTP请求示例
+
+###### 请求 path
+```
+/api/template/queryByTag
+```
+
+
+###### 请求 query
+```
+json :
+{
+  "tag" : "string"
+}
+```
+
+
+##### HTTP响应示例
+
+###### 响应 200
+```
+json :
+{
+  "code" : "string",
+  "data" : [ "object" ],
+  "msg" : "string"
+}
+```
+
+
+<a name="uploadusingpost_1"></a>
+#### 上传模板
+```
+POST /api/template/upload
+```
+
+
+##### 说明
+Post方法，thumbnail放缩略图，tag是模板所属的种类返回信息为模板的jsonurl和缩略图url,理论上来说只有管理员才能上传，为了便于测试没有添加授权验证
+
+
+##### 参数
+
+|类型|名称|说明|类型|
+|---|---|---|---|
+|**Query**|**jsonText**  <br>*可选*|jsonText|string|
+|**Query**|**tag**  <br>*可选*|tag|string|
+|**FormData**|**thumbnail**  <br>*可选*|thumbnail|file|
+
+
+##### 响应
+
+|HTTP代码|说明|类型|
+|---|---|---|
+|**200**|OK|[Result«PublicTemplate»](#cfa5ce0b084b6b9805b014d95c2849ef)|
+|**201**|Created|无内容|
+|**401**|Unauthorized|无内容|
+|**403**|Forbidden|无内容|
+|**404**|Not Found|无内容|
+
+
+##### 消耗
+
+* `multipart/form-data`
+
+
+##### 生成
+
+* `*/*`
+
+
+##### HTTP请求示例
+
+###### 请求 path
+```
+/api/template/upload
+```
+
+
+###### 请求 query
+```
+json :
+{
+  "jsonText" : "string",
+  "tag" : "string"
+}
+```
+
+
+###### 请求 formData
+```
+json :
+"file"
+```
+
+
+##### HTTP响应示例
+
+###### 响应 200
+```
+json :
+{
+  "code" : "string",
+  "data" : {
+    "id" : 0,
+    "tag" : "string",
+    "thumbnailUrl" : "string",
+    "url" : "string"
+  },
+  "msg" : "string"
+}
+```
+
+
 <a name="user-controller_resource"></a>
 ### User-controller
 User Controller
