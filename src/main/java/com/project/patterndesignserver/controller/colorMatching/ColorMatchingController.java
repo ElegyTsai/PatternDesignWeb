@@ -3,12 +3,11 @@ package com.project.patterndesignserver.controller.colorMatching;
 
 import com.project.patterndesignserver.util.result.ExceptionMsg;
 import com.project.patterndesignserver.util.result.Result;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
 import java.util.UUID;
@@ -35,9 +34,11 @@ public class ColorMatchingController {
     @Value("${python.runner}")
     private String python;
 
-    @RequestMapping("/test")
+    @ApiOperation(value = "配对单张图片",tags = {"颜色匹配"},notes = "配对单张图片，图片必须是公共素材库的，传入两个参数，分别为生成图的url" +
+            "和参考图的url，示例：localhost:8081/api/img/public/getImage/bird/1.png,前面不能有http 但是会在后续进行修改,返回")
+    @RequestMapping(value = "/matchOne",method = RequestMethod.GET, produces = {MediaType.IMAGE_JPEG_VALUE,MediaType.IMAGE_PNG_VALUE})
     @ResponseBody
-    public Result<byte []> colorMatching(String pictureUrl1, String pictureUrl2,
+    public byte [] colorMatching(String sourceUrl, String referenceUrl,
                                          @RequestParam(value = "k", required = false, defaultValue = "8")Integer k,
                                          @RequestParam(value = "mode", required = false, defaultValue = "match")String mode) {
         String savePath = UPLOAD_FOLDER+"out";
@@ -53,8 +54,8 @@ public class ColorMatchingController {
             pictureSavePathFile.mkdirs();
         }
 
-        String reference = MATERIAL_FOLDER_PREFIX+pictureUrl1.substring(SERVER_PREFIX.length());
-        String source = MATERIAL_FOLDER_PREFIX+pictureUrl2.substring(SERVER_PREFIX.length());
+        String reference = MATERIAL_FOLDER_PREFIX+referenceUrl.substring(SERVER_PREFIX.length());
+        String source = MATERIAL_FOLDER_PREFIX+sourceUrl.substring(SERVER_PREFIX.length());
         //System.out.println("source="+source+";reference="+reference);
         String[] args = new String[] {python, file, reference, source, pictureSavePath,fileName,
                 String.valueOf(k), mode};
@@ -73,7 +74,8 @@ public class ColorMatchingController {
             in.close();
             if (re == 1) {
                 //System.out.println("调用脚本失败");
-                return new Result<>(ExceptionMsg.FAIL);
+                return null;
+//                return new Result<>(ExceptionMsg.FAIL);
             }
             Result<byte []> res = new Result<>();
             File file = new File(pictureSavePath+separator+fileName);
@@ -81,12 +83,12 @@ public class ColorMatchingController {
             byte [] bytes = new byte[inputStream.available()];
             inputStream.read(bytes,0, inputStream.available());
             res.setData(bytes);
-            return res;
+            return bytes;
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return new Result<>(ExceptionMsg.FAIL);
+        return null;
     }
 }
