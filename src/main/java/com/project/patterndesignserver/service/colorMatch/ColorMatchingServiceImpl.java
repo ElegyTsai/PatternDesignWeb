@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -85,5 +87,19 @@ public class ColorMatchingServiceImpl implements ColorMatchingService{
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public List<String> MatchAll(List<String> sourceUrls, List<String> referenceUrls, Integer k, String mode) {
+        List<String> res = new ArrayList<>();
+        try {
+            for (int i = 0; i < sourceUrls.size(); i++) {
+                res.add(MatchOne(sourceUrls.get(i),referenceUrls.get(i),k,mode));
+            }
+            return res;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 }
