@@ -20,15 +20,15 @@ public class ColorMatchingController {
 
     @Autowired
     ColorMatchingService colorMatchingService;
-    @ApiOperation(value = "配对单张图片",tags = {"颜色匹配"},notes = "配对单张图片，图片必须是公共素材库的，传入两个参数，分别为生成图的url" +
+    @ApiOperation(value = "配对单张图片",tags = {"颜色匹配"},notes = "配对单张图片，返回配对后图的url，图片必须是公共素材库的，传入两个参数，分别为生成图的url" +
             "和参考图的url，示例：http://localhost:8081/server_resource/material/bird/1.png,前面需要有http，没有生成则返回400 statecode")
-    @RequestMapping(value = "/matchOne",method = RequestMethod.GET, produces = {MediaType.IMAGE_JPEG_VALUE,MediaType.IMAGE_PNG_VALUE})
+    @RequestMapping(value = "/matchOne",method = RequestMethod.GET)
     @ResponseBody
-    public byte [] colorMatching(String sourceUrl, String referenceUrl,
+    public String colorMatching(String sourceUrl, String referenceUrl,
                                  @RequestParam(value = "k", required = false, defaultValue = "8")Integer k,
                                  @RequestParam(value = "mode", required = false, defaultValue = "match")String mode,
                                  HttpServletResponse response) {
-        byte [] res= colorMatchingService.MatchOne(sourceUrl, referenceUrl, k, mode);
+        String res= colorMatchingService.MatchOne(sourceUrl, referenceUrl, k, mode);
         if(res == null){
             response.setStatus(400);
             //没有正确生成
