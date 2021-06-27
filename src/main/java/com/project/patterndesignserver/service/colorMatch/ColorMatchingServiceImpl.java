@@ -35,7 +35,7 @@ public class ColorMatchingServiceImpl implements ColorMatchingService{
         String savePath = UPLOAD_FOLDER + "out";
         String thumbnailSavePath = savePath + separator + "thumbnail";
         String pictureSavePath = savePath + separator + "picture";
-        String fileName = UUID.randomUUID().toString().replace("-", "") + ".jpg";
+        String fileName = UUID.randomUUID().toString().replace("-", "") + ".png";
         File thumbnailSavePathFile = new File(thumbnailSavePath);
         File pictureSavePathFile = new File(pictureSavePath);
         if (!thumbnailSavePathFile.exists()) {
