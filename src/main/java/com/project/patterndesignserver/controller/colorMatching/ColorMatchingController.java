@@ -64,7 +64,7 @@ public class ColorMatchingController {
                 getType());
         List<String> referenceList = gson.fromJson(referenceUrls, new TypeToken<List<String>>(){}.
                 getType());
-        for(String s: sourceList) System.out.println(s);
+        for(String s: sourceList) System.out.println("url:"+s);
 
         List<String> res = colorMatchingService.MatchAll(sourceList, referenceList, k, mode);
         System.out.println(res.size());
