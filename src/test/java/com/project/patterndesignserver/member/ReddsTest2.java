@@ -26,4 +26,12 @@ public class ReddsTest2 {
         Object s =redisTemplate.opsForValue().get("key");
         System.out.println(s);
     }
+
+    @Test
+    public void test3(){
+        Double a = new Double(2);
+        Double b = new Double(2.0);
+        System.out.println(Double.hashCode(a));
+        System.out.println(Double.hashCode(b));
+    }
 }
