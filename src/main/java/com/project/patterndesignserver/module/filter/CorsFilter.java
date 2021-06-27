@@ -4,8 +4,8 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
-@WebFilter("/*")
+//不启用
+//@WebFilter("/*")
 public class CorsFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse resp, FilterChain chain) throws IOException, ServletException

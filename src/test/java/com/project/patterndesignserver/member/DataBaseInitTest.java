@@ -57,7 +57,7 @@ public class DataBaseInitTest {
     @Test
     public void UserRoleInitTest1(){
         UserRole userRole1 = new UserRole();
-        userRole1.setRoleName("guest");
+        userRole1.setRoleName("ROLE_GUEST");
         userRole1.setDescription("No need to log in");
         userRole1.setAvailable(true);
         List<UserPermission> permissions = new ArrayList<>();
