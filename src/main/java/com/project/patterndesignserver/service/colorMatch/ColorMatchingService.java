@@ -4,5 +4,5 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 public interface ColorMatchingService {
 
-    public byte [] MatchOne(String sourceUrl, String referenceUrl, Integer k, String mode);
+    public String MatchOne(String sourceUrl, String referenceUrl, Integer k, String mode);
 }

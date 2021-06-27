@@ -27,10 +27,11 @@ public class ColorMatchingServiceImpl implements ColorMatchingService{
 
     @Value("${python.runner}")
     private String python;
-
+    @Value("${serverResource.url}")
+    private String urlprefix;
 
     @Override
-    public byte[] MatchOne(String sourceUrl, String referenceUrl, Integer k, String mode) {
+    public String MatchOne(String sourceUrl, String referenceUrl, Integer k, String mode) {
         String savePath = UPLOAD_FOLDER + "out";
         String thumbnailSavePath = savePath + separator + "thumbnail";
         String pictureSavePath = savePath + separator + "picture";
@@ -69,13 +70,15 @@ public class ColorMatchingServiceImpl implements ColorMatchingService{
                 return null;
 //                return new Result<>(ExceptionMsg.FAIL);
             }
-            Result<byte[]> res = new Result<>();
-            File file = new File(pictureSavePath + separator + fileName);
-            FileInputStream inputStream = new FileInputStream(file);
-            byte[] bytes = new byte[inputStream.available()];
-            inputStream.read(bytes, 0, inputStream.available());
-            res.setData(bytes);
-            return bytes;
+            String url = urlprefix+"out/picture/"+fileName;
+//            Result<byte[]> res = new Result<>();
+//            File file = new File(pictureSavePath + separator + fileName);
+//            FileInputStream inputStream = new FileInputStream(file);
+//            byte[] bytes = new byte[inputStream.available()];
+//            inputStream.read(bytes, 0, inputStream.available());
+//            res.setData(bytes);
+            System.out.println(url);
+            return url;
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
