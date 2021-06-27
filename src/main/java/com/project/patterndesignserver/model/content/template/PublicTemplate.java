@@ -3,10 +3,10 @@ package com.project.patterndesignserver.model.content.template;
 import lombok.Data;
 
 @Data
-public class publicTemplate {
+public class PublicTemplate {
     private int id;
 //    private String jsonText;
-    private String thumbnailURL;
+    private String thumbnailUrl;
     private String tag;
     private String url;
 }

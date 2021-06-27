@@ -41,7 +41,6 @@ public class SysImageServiceImpl extends BaseController implements SysImageServi
     @Override
     public Result<String> uploadImage(MultipartFile multipartFile, String tag, String permission){
 
-
         PublicImage image = new PublicImage();
         String originalName = multipartFile.getOriginalFilename();
         String suffix =originalName.substring(originalName.lastIndexOf(".")).toLowerCase();

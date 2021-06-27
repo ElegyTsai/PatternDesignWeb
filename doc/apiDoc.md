@@ -20,6 +20,7 @@
 ### 标签
 
 * latest-used-material-controller : Latest Used Material Controller
+* public-template-controller : Public Template Controller
 * user-controller : User Controller
 * user-image-controller : User Image Controller
 * 公共素材管理 : Public Image Controller
@@ -43,7 +44,7 @@ PUT /api/material/log/add
 
 
 ##### 说明
-需要带着token才能记录用户身份，但是这个api本身不需要授权授权，未登陆可以访问但是不会被记录，只需要get/post一个url即可
+需要带着token才能记录用户身份，但是这个api本身不需要授权授权，未登陆可以访问但是不会被记录，只需要put一个url即可
 
 
 ##### 参数
@@ -199,6 +200,11 @@ GET /api/material/log/save
 ```
 /api/material/log/save
 ```
+
+
+<a name="public-template-controller_resource"></a>
+### Public-template-controller
+Public Template Controller
 
 
 <a name="user-controller_resource"></a>
@@ -561,7 +567,7 @@ json :
 ```
 
 
-<a name="getnailusingget_1"></a>
+<a name="getnailusingget_2"></a>
 #### getNail
 ```
 GET /api/img/user/getNail/{url}
@@ -650,7 +656,7 @@ json :
 ```
 
 
-<a name="uploadusingpost_1"></a>
+<a name="uploadusingpost_2"></a>
 #### upload
 ```
 POST /api/img/user/upload
@@ -1036,6 +1042,17 @@ json :
 |**uuid**  <br>*可选*|**样例** : `"string"`|string|
 
 
+<a name="publictemplate"></a>
+### PublicTemplate
+
+|名称|说明|类型|
+|---|---|---|
+|**id**  <br>*可选*|**样例** : `0`|integer (int32)|
+|**tag**  <br>*可选*|**样例** : `"string"`|string|
+|**thumbnailUrl**  <br>*可选*|**样例** : `"string"`|string|
+|**url**  <br>*可选*|**样例** : `"string"`|string|
+
+
 <a name="response"></a>
 ### Response
 
@@ -1062,6 +1079,16 @@ json :
 |---|---|---|
 |**code**  <br>*可选*|**样例** : `"string"`|string|
 |**data**  <br>*可选*|**样例** : `[ "object" ]`|< object > array|
+|**msg**  <br>*可选*|**样例** : `"string"`|string|
+
+
+<a name="cfa5ce0b084b6b9805b014d95c2849ef"></a>
+### Result«PublicTemplate»
+
+|名称|说明|类型|
+|---|---|---|
+|**code**  <br>*可选*|**样例** : `"string"`|string|
+|**data**  <br>*可选*|**样例** : `"[publictemplate](#publictemplate)"`|[PublicTemplate](#publictemplate)|
 |**msg**  <br>*可选*|**样例** : `"string"`|string|
 
 
