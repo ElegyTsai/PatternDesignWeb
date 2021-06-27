@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -35,7 +37,7 @@ public class ColorMatchingServiceImpl implements ColorMatchingService{
         String savePath = UPLOAD_FOLDER + "out";
         String thumbnailSavePath = savePath + separator + "thumbnail";
         String pictureSavePath = savePath + separator + "picture";
-        String fileName = UUID.randomUUID().toString().replace("-", "") + ".jpg";
+        String fileName = UUID.randomUUID().toString().replace("-", "") + ".png";
         File thumbnailSavePathFile = new File(thumbnailSavePath);
         File pictureSavePathFile = new File(pictureSavePath);
         if (!thumbnailSavePathFile.exists()) {
@@ -85,5 +87,19 @@ public class ColorMatchingServiceImpl implements ColorMatchingService{
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public List<String> MatchAll(List<String> sourceUrls, List<String> referenceUrls, Integer k, String mode) {
+        List<String> res = new ArrayList<>();
+        try {
+            for (int i = 0; i < sourceUrls.size(); i++) {
+                res.add(MatchOne(sourceUrls.get(i),referenceUrls.get(i),k,mode));
+            }
+            return res;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 }
