@@ -18,8 +18,10 @@ import java.io.InputStreamReader;
 public class ColorMatchingController {
 
 
-    @Value("${prop.upload-folder}")
+    @Value("${serverResource.path}")
     private String UPLOAD_FOLDER;
+    @Value("${image.separator}")
+    private String separator;
 
     @Value("${prop.material_folder_prefix}")
     private String MATERIAL_FOLDER_PREFIX;
@@ -30,14 +32,17 @@ public class ColorMatchingController {
     @Value("${python.colormatching}")
     private String file;
 
+    @Value("${python.runner}")
+    private String python;
+
     @RequestMapping("/")
     @ResponseBody
-    public String colorMatching(String uname, String pid1, String pid2,
+    public String colorMatching(String pictureUrl1, String pictureUrl2,
                                 @RequestParam(value = "k", required = false, defaultValue = "8")Integer k,
                                 @RequestParam(value = "mode", required = false, defaultValue = "match")String mode) {
-        String savePath = UPLOAD_FOLDER;
-        String thumbnailSavePath = savePath  + uname + "/thumbnail/";
-        String pictureSavePath = savePath + uname + "/picture/";
+        String savePath = UPLOAD_FOLDER+"out";
+        String thumbnailSavePath = savePath  + separator + "thumbnail";
+        String pictureSavePath = savePath + separator + "picture";
         File thumbnailSavePathFile = new File(thumbnailSavePath);
         File pictureSavePathFile = new File(pictureSavePath);
         if (!thumbnailSavePathFile.exists()) {
@@ -47,10 +52,10 @@ public class ColorMatchingController {
             pictureSavePathFile.mkdirs();
         }
 
-        String reference = MATERIAL_FOLDER_PREFIX+pid2.substring(SERVER_PREFIX.length());
-        String source = MATERIAL_FOLDER_PREFIX+pid1.substring(SERVER_PREFIX.length());
+        String reference = MATERIAL_FOLDER_PREFIX+pictureUrl1.substring(SERVER_PREFIX.length());
+        String source = MATERIAL_FOLDER_PREFIX+pictureUrl2.substring(SERVER_PREFIX.length());
         //System.out.println("source="+source+";reference="+reference);
-        String[] args = new String[] {"/usr/local/bin/python3", file, reference, source, pictureSavePath,
+        String[] args = new String[] {python, file, reference, source, pictureSavePath,
                 String.valueOf(k), mode};
         try {
             Process process = Runtime.getRuntime().exec(args);

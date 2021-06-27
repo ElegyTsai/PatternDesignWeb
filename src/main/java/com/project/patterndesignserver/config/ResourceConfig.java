@@ -8,8 +8,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class ResourceConfig implements WebMvcConfigurer {
 
-    @Value("${serverdata.path}")
-    String path;
+    @Value("${serverResource.path}")
+    private String path;
     //定制资源映射
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
