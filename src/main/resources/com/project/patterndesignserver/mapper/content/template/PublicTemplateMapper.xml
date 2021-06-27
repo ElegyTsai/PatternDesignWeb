@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.patterndesignserver.mapper.content.template.PublicTemplateMapper">
+
+    <!-- 查找某个标签的所有模板 -->
+    <select id="queryByTag" parameterType="String"
+            resultType="com.project.patterndesignserver.model.content.template.PublicTemplate">
+        select url,thumbnailUrl,tag
+        from template
+        where template.tag=#{tag};
+    </select>
+
+    <!-- 插入某个模板 -->
+    <insert id="addTemplate" parameterType="com.project.patterndesignserver.model.content.template.PublicTemplate">
+        insert into template(thumbnailUrl,url,tag)
+        VALUES (#{thumbnailUrl},#{url},#{tag})
+    </insert>
+
+</mapper>
