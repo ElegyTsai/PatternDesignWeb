@@ -88,7 +88,7 @@ def color_match(clt, sou):
     one_hot = np.eye(clt.cluster_centers_.shape[0])[predicts]
 
     resultimage = np.dot(one_hot, clt.cluster_centers_).reshape(sou.shape[0], sou.shape[1], 3).astype('uint8')
-    
+
     match_time = time.time() - tic
     return resultimage, match_time
 
@@ -104,10 +104,15 @@ def transparentToWhite(image, alpha):
     return image
 
 reference = sys.argv[1]
+print(reference)
 source = sys.argv[2]
+print(source)
 output = sys.argv[3]
-k = int(sys.argv[4])
-mode = sys.argv[5]
+print(output)
+filename = sys.argv[4]
+k = int(sys.argv[5])
+mode = sys.argv[6]
+
 
 # read the reference image
 ref = cv2.imread(reference, cv2.IMREAD_UNCHANGED)
@@ -146,11 +151,11 @@ match_result, match_time = color_match(clt, sou)
 
 print ("color analysis time: %.4f"%(analysis_time))
 bar = cv2.cvtColor(bar, cv2.COLOR_RGB2BGR)
-cv2.imwrite(output+"/analysis_bar.jpg", bar)
+# cv2.imwrite(output+filename, bar)
 
 match_result = cv2.cvtColor(match_result, cv2.COLOR_RGB2BGR)
 if soualpha is not None:
     match_result = np.concatenate([match_result, soualpha], axis = -1)
 
 print ("color match time: %.4f"%(match_time))
-cv2.imwrite(output+"/match_result.jpg", match_result)
+cv2.imwrite(output+"/"+filename, match_result)
