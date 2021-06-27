@@ -35,7 +35,7 @@ public class ColorMatchingController {
     private String python;
 
     @ApiOperation(value = "配对单张图片",tags = {"颜色匹配"},notes = "配对单张图片，图片必须是公共素材库的，传入两个参数，分别为生成图的url" +
-            "和参考图的url，示例：localhost:8081/api/img/public/getImage/bird/1.png,前面不能有http 但是会在后续进行修改,返回")
+            "和参考图的url，示例：http://localhost:8081/api/img/public/getImage/bird/1.png,前面需要有http")
     @RequestMapping(value = "/matchOne",method = RequestMethod.GET, produces = {MediaType.IMAGE_JPEG_VALUE,MediaType.IMAGE_PNG_VALUE})
     @ResponseBody
     public byte [] colorMatching(String sourceUrl, String referenceUrl,
