@@ -21,7 +21,7 @@ public class PublicTemplateServiceImpl implements PublicTemplateService{
     @Autowired
     PublicTemplateMapper publicTemplateMapper;
 
-    @Value("${serverdata.path}")
+    @Value("${serverResource.path}")
     private String path;
     @Value("${image.separator}")
     private String separator;

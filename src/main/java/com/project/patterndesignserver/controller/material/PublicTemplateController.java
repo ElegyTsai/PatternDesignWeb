@@ -60,6 +60,7 @@ public class PublicTemplateController {
             return new String(res);
         }
         catch (Exception e){
+            e.printStackTrace();
             response.setStatus(404);
             return null;
         }
