@@ -43,7 +43,7 @@ public class PublicImageController {
         return sysImageService.deleteImage(id);
     }
 
-    @ApiOperation(value = "查看高清图片",tags = {"公共素材管理"},notes = "get方法，需要tag和图片的UUID" +
+    @ApiOperation(value = "查看高清图片",tags = {"公共素材管理"},notes = "【目前这个方法已经被废弃 】get方法，需要tag和图片的UUID" +
             "用byte数组传递图片")
     @RequestMapping(value = "/getImage/{tag}/{url}",method = RequestMethod.GET,produces = {MediaType.IMAGE_JPEG_VALUE,MediaType.IMAGE_PNG_VALUE})
     @ResponseBody
@@ -58,7 +58,7 @@ public class PublicImageController {
         }
     }
 
-    @ApiOperation(value = "查看缩略图片",tags = {"公共素材管理"},notes = "get方法，需要tag和图片的UUID" +
+    @ApiOperation(value = "查看缩略图片",tags = {"公共素材管理"},notes = "【目前这个方法已经被废弃 】get方法，需要tag和图片的UUID" +
             "用byte数组传递图片")
     @RequestMapping(value = "/getNail//{tag}/{url}",method = RequestMethod.GET,produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody

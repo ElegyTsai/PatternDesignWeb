@@ -31,10 +31,10 @@ public class ColorMatchingServiceImpl implements ColorMatchingService{
 
     @Override
     public byte[] MatchOne(String sourceUrl, String referenceUrl, Integer k, String mode) {
-        String savePath = UPLOAD_FOLDER+"out";
-        String thumbnailSavePath = savePath  + separator + "thumbnail";
+        String savePath = UPLOAD_FOLDER + "out";
+        String thumbnailSavePath = savePath + separator + "thumbnail";
         String pictureSavePath = savePath + separator + "picture";
-        String fileName = UUID.randomUUID().toString().replace("-","")+".jpg";
+        String fileName = UUID.randomUUID().toString().replace("-", "") + ".jpg";
         File thumbnailSavePathFile = new File(thumbnailSavePath);
         File pictureSavePathFile = new File(pictureSavePath);
         if (!thumbnailSavePathFile.exists()) {
@@ -44,15 +44,15 @@ public class ColorMatchingServiceImpl implements ColorMatchingService{
             pictureSavePathFile.mkdirs();
         }
 
-        String reference = MATERIAL_FOLDER_PREFIX+referenceUrl.substring(SERVER_PREFIX.length());
-        reference =reference.replace("/",separator);
-        String source = MATERIAL_FOLDER_PREFIX+sourceUrl.substring(SERVER_PREFIX.length());
-        source = source.replace("/",separator);
+        String reference = MATERIAL_FOLDER_PREFIX + referenceUrl.substring(SERVER_PREFIX.length());
+        reference = reference.replace("/", separator);
+        String source = MATERIAL_FOLDER_PREFIX + sourceUrl.substring(SERVER_PREFIX.length());
+        source = source.replace("/", separator);
         //System.out.println("source="+source+";reference="+reference);
-        String[] args = new String[] {python, file, reference, source, pictureSavePath,fileName,
+        String[] args = new String[]{python, file, reference, source, pictureSavePath, fileName,
                 String.valueOf(k), mode};
         try {
-            for(String s: args){
+            for (String s : args) {
                 System.out.println(s);
             }
 
@@ -69,11 +69,11 @@ public class ColorMatchingServiceImpl implements ColorMatchingService{
                 return null;
 //                return new Result<>(ExceptionMsg.FAIL);
             }
-            Result<byte []> res = new Result<>();
-            File file = new File(pictureSavePath+separator+fileName);
+            Result<byte[]> res = new Result<>();
+            File file = new File(pictureSavePath + separator + fileName);
             FileInputStream inputStream = new FileInputStream(file);
-            byte [] bytes = new byte[inputStream.available()];
-            inputStream.read(bytes,0, inputStream.available());
+            byte[] bytes = new byte[inputStream.available()];
+            inputStream.read(bytes, 0, inputStream.available());
             res.setData(bytes);
             return bytes;
         } catch (IOException e) {
