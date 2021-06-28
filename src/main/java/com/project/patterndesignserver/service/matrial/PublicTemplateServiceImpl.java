@@ -25,10 +25,9 @@ public class PublicTemplateServiceImpl implements PublicTemplateService{
     private String path;
     @Value("${image.separator}")
     private String separator;
-    @Value("${template.nail.url}")
-    private String nailUrl;
-    @Value("${template.json.url}")
-    private String jsonUrl;
+    @Value("${serverResource.url}")
+    private String urlPrefix;
+
 
     @Override
     public Result<PublicTemplate> upload(MultipartFile thumbnail, String tag, String jsonText) {
@@ -55,9 +54,9 @@ public class PublicTemplateServiceImpl implements PublicTemplateService{
             fileWriter.flush();
             fileWriter.close();
 
-            publicTemplate.setThumbnailUrl(nailUrl+tag+"/"+uid+suffix);
+            publicTemplate.setThumbnailUrl(urlPrefix+"template/"+tag+"/"+uid+suffix);
             publicTemplate.setTag(tag);
-            publicTemplate.setUrl(jsonUrl+tag+"/"+uid+".json");
+            publicTemplate.setUrl(urlPrefix+"template/"+tag+"/"+uid+".json");
             publicTemplateMapper.addTemplate(publicTemplate);
             Result<PublicTemplate> res = new Result<>();
             res.setData(publicTemplate);

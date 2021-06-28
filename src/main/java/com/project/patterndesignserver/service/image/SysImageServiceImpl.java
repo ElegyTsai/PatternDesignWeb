@@ -34,7 +34,7 @@ public class SysImageServiceImpl extends BaseController implements SysImageServi
     private String path;
     @Value("${image.hd.url}")
     private String urlPrefix;
-    @Value("${image.nail.url}")
+    @Value("${image.nail.prefix}")
     private String nailUrlPrefix;
     @Value("${image.separator}")
     private String separator;
@@ -67,11 +67,11 @@ public class SysImageServiceImpl extends BaseController implements SysImageServi
 //            System.out.println(newPath);
             Thumbnails.of(newPath+newFileName)
                     .size(128, 128)
-                    .toFile(newPath+"th_"+newFileName);
+                    .toFile(newPath+nailUrlPrefix+newFileName);
 
             image.setImageName(newFileName);
             image.setAvailable(true);
-            image.setThumbnailPath(newPath+"th_"+newFileName);
+            image.setThumbnailPath(newPath+nailUrlPrefix+newFileName);
 
             publicImageMapper.addImage(image);
 
@@ -155,7 +155,7 @@ public class SysImageServiceImpl extends BaseController implements SysImageServi
             String fileName = image.getImageName();
             result.setUUID(fileName);
             result.setImageUrl(urlPrefix+tag+"/"+fileName);
-            result.setThumbNailUrl(nailUrlPrefix+tag+"/"+fileName);
+            result.setThumbNailUrl(urlPrefix+tag+"/"+nailUrlPrefix+fileName);
             results.add(result);
         }
         return results;

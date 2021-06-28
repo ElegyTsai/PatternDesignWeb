@@ -30,7 +30,7 @@ public class PublicTemplateController {
         return publicTemplateService.upload(thumbnail,tag,jsonText);
     }
 
-    @ApiOperation(value = "查询模板",tags = {"模板管理","public-template-controller"},notes = "get方法，用于查找种类下的模板" +
+    @ApiOperation(value = "查询模板",tags = {"模板管理","public-template-controller"},notes = "【目前这个方法已经被废弃 】get方法，用于查找种类下的模板" +
             "返回信息为模板List，里面有jsonurl和缩略图url")
     @RequestMapping(value = "/queryByTag",method = RequestMethod.GET)
     @ResponseBody
@@ -38,7 +38,7 @@ public class PublicTemplateController {
         return publicTemplateService.queryByTag(tag);
     }
 
-    @ApiOperation(value = "获取模板缩略图",tags = {"模板管理","public-template-controller"},notes = "get方法，获取模板的缩略图" )
+    @ApiOperation(value = "获取模板缩略图",tags = {"模板管理","public-template-controller"},notes = "【目前这个方法已经被废弃 】get方法，获取模板的缩略图" )
     @RequestMapping(value = "/getNail/{tag}/{fileName}",method = RequestMethod.GET,produces = {MediaType.IMAGE_JPEG_VALUE,MediaType.IMAGE_PNG_VALUE})
     @ResponseBody
     public byte[] getNail(@PathVariable String tag, @PathVariable String fileName, HttpServletResponse response){
