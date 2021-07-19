@@ -14,6 +14,12 @@ public class MattingQueueHandlerService {
     @RabbitListener(queues = "matting.receiver")
     @RabbitHandler
     public void updateFeedback(String msg){
+        System.out.println(msg);
+        try {
         mattingService.updateState(msg);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

@@ -41,7 +41,7 @@ public class ExecutorPool {
     public boolean renewTask(MattingTask mattingTask){
         writeLock.lock();
         MattingTask oldTask = getTask(mattingTask.getSessionId());
-        oldTask.taskIsWaiting();
+        oldTask.setStatusAsActive();
         oldTask.setCacheImage(mattingTask.getCacheImage());
         oldTask.updateTimeNow();
         LRUQueue.remove(oldTask);
@@ -100,6 +100,16 @@ public class ExecutorPool {
         writeLock.unlock();
         return true;
     }
+    public int reset(long sessionId){
+        MattingTask mattingTask = getTask(sessionId);
+        if(mattingTask==null) return -1;
+        writeLock.lock();
+        mattingTask.taskReset();
+        int ret = mattingTask.getOperationCount();
+        initializeToMQ(mattingTask);
+        writeLock.unlock();
+        return ret;
+    }
 
     public int addClick(long sessionId,int x,int y,boolean mouse){
         MattingTask mattingTask = getTask(sessionId);
@@ -121,25 +131,26 @@ public class ExecutorPool {
         mattingTask.updateTimeNow();
         LRUQueue.remove(mattingTask);
         LRUQueue.add(mattingTask);
-        if(!mattingTask.undo()) return -1;
+        if(!mattingTask.undo()) return -2;
         int ret =mattingTask.getOperationCount();
         writeLock.unlock();
         // false表示撤销失败，click为空
         rabbitmqTemplate.convertAndSend("mattingExchange","handler.1",mattingTask.serialized());
         return ret;
     }
-    public boolean mask(long sessionId){
+    public int mask(long sessionId){
         MattingTask mattingTask = getTask(sessionId);
-        if(mattingTask==null) return false;
+        if(mattingTask==null) return -1;
         writeLock.lock();
         mattingTask.updateTimeNow();
         LRUQueue.remove(mattingTask);
         LRUQueue.add(mattingTask);
+        int ret = mattingTask.getOperationCount();
         writeLock.unlock();
-        if(!mattingTask.mask()) return false;
+        if(!mattingTask.mask()) return -1;
         // false表示失败
         rabbitmqTemplate.convertAndSend("mattingExchange","handler.1",mattingTask.serialized());
-        return true;
+        return ret;
     }
 
     protected int LRURemove(){

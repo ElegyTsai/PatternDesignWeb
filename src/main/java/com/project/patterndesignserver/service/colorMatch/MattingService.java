@@ -10,9 +10,13 @@ import org.springframework.web.multipart.MultipartFile;
 public interface MattingService {
     public void upload(DeferredResult<Result<Long>> deferredResult, MultipartFile file);
 
-    public void addClick(DeferredResult<Result<byte[]>> deferredResult,long sessionId,int x,int y,boolean mouse);
+    public void addClick(DeferredResult<Result<String>> deferredResult,long sessionId,int x,int y,boolean mouse);
 
     public void updateState(String msg);
 
-    public void undo(DeferredResult<Result<byte[]>> deferredResult,long sessionId);
+    public void undo(DeferredResult<Result<String>> deferredResult,long sessionId);
+
+    public void reset(DeferredResult<Result<String>> deferredResult,long sessionId);
+
+    public void getMask(DeferredResult<Result<String>> deferredResult,long sessionId);
 }

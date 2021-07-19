@@ -27,6 +27,6 @@ public class ImageUtil {
             }
         }
         multipartFile.transferTo(file);
-        return path+separator+newFileName;
+        return path+newFileName;
     }
 }

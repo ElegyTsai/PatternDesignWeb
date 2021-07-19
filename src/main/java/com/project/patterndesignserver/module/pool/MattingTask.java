@@ -20,7 +20,7 @@ public class MattingTask {
     private int operationCount;
 
     private List<List<Integer>> clicks = new ArrayList<>();
-    private byte[] cacheImage;
+    private String cacheImage;
     private String operation;
 
     @Override
@@ -34,10 +34,10 @@ public class MattingTask {
         return (int)sessionId > 0? (int)sessionId:-(int)sessionId;
     }
 
-    public byte[] getCacheImage() {
+    public String getCacheImage() {
         return cacheImage;
     }
-    public void setCacheImage(byte[] cacheImage){
+    public void setCacheImage(String cacheImage){
         this.cacheImage = cacheImage;
     }
     public void clearCacheImage(){
@@ -94,7 +94,7 @@ public class MattingTask {
     public boolean mask(){
         if(clicks.isEmpty()) return false;
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("operation","getMask");
+        jsonObject.addProperty("operation","save");
         this.operation = jsonObject.toString();
         operationCount++;
         setStatusAsRunning();
@@ -120,6 +120,12 @@ public class MattingTask {
         jsonObject.addProperty("operation","redo");
         this.operation = jsonObject.toString();
         setStatusAsActive();
+        return true;
+    }
+    public boolean taskReset(){
+        this.taskInitialize();
+        this.operationCount++;
+        this.clicks.clear();
         return true;
     }
 

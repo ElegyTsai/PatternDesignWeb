@@ -23,10 +23,12 @@ public class MattingServiceImpl implements MattingService{
     ExecutorPool executorPool;
 
     @Async
+    @Override
     public void upload(DeferredResult<Result<Long>> deferredResult,MultipartFile file){
         MattingTask mattingTask;
         try{
             mattingTask = new MattingTask(file,path);
+            System.out.println(mattingTask.getFileName());
         }
         catch (IOException ioException){
             Result<Long> res = new Result<>(ExceptionMsg.SuffixError);
@@ -38,6 +40,7 @@ public class MattingServiceImpl implements MattingService{
             deferredResult.setResult(res);
             return;
         }
+        System.out.println("process");
         long sessionId = mattingTask.getSessionId();
         int operationCnt = mattingTask.getOperationCount();
         executorPool.initializeTask(mattingTask);
@@ -62,7 +65,8 @@ public class MattingServiceImpl implements MattingService{
 
 
     @Async
-    public void addClick(DeferredResult<Result<byte[]>> deferredResult,long sessionId,int x,int y,boolean mouse){
+    @Override
+    public void addClick(DeferredResult<Result<String>> deferredResult,long sessionId,int x,int y,boolean mouse){
         int operationCnt = executorPool.addClick(sessionId,x,y,mouse);
         if(operationCnt==-1){
             deferredResult.setResult(new Result<>(ExceptionMsg.OutdatedSession));
@@ -75,21 +79,52 @@ public class MattingServiceImpl implements MattingService{
                 Thread.yield();
                 Thread.sleep(10);}
             catch (Exception e){
-                Result<byte []> res = new Result<>(ExceptionMsg.FAIL);
+                Result<String> res = new Result<>(ExceptionMsg.FAIL);
                 deferredResult.setResult(res);
                 return;
             }
             finishedTask = executorPool.getTask(sessionId);
         }
-        Result<byte []> res = new Result<>();
-        res.setData(finishedTask.getCacheImage());
+        Result<String> res = new Result<>();
+        String base64 =finishedTask.getCacheImage();
+        res.setData(base64);
         deferredResult.setResult(res);
         return;
     }
 
     @Async
-    public void undo(DeferredResult<Result<byte[]>> deferredResult,long sessionId){
+    @Override
+    public void undo(DeferredResult<Result<String>> deferredResult,long sessionId){
         int operationCnt = executorPool.undo(sessionId);
+        if(operationCnt==-1){
+            deferredResult.setResult(new Result<>(ExceptionMsg.OutdatedSession));
+        }
+        if(operationCnt==-2){
+            deferredResult.setResult(new Result<>(ExceptionMsg.UndoError));
+        }
+
+        MattingTask finishedTask = executorPool.getTask(sessionId);
+        while(finishedTask.getOperationCount()<operationCnt || (finishedTask.getOperationCount()==operationCnt && finishedTask.taskIsRunning()))
+        {
+            try{
+                Thread.yield();
+                Thread.sleep(10);}
+            catch (Exception e){
+                Result<String> res = new Result<>(ExceptionMsg.FAIL);
+                deferredResult.setResult(res);
+                return;
+            }
+            finishedTask = executorPool.getTask(sessionId);
+        }
+        Result<String> res = new Result<>();
+        res.setData(finishedTask.getCacheImage());
+        deferredResult.setResult(res);
+        return;
+    }
+    @Async
+    @Override
+    public void reset(DeferredResult<Result<String>> deferredResult,long sessionId){
+        int operationCnt = executorPool.reset(sessionId);
         if(operationCnt==-1){
             deferredResult.setResult(new Result<>(ExceptionMsg.OutdatedSession));
         }
@@ -101,18 +136,43 @@ public class MattingServiceImpl implements MattingService{
                 Thread.yield();
                 Thread.sleep(10);}
             catch (Exception e){
-                Result<byte []> res = new Result<>(ExceptionMsg.FAIL);
+                Result<String> res = new Result<>(ExceptionMsg.FAIL);
                 deferredResult.setResult(res);
                 return;
             }
             finishedTask = executorPool.getTask(sessionId);
         }
-        Result<byte []> res = new Result<>();
+        Result<String> res = new Result<>();
         res.setData(finishedTask.getCacheImage());
         deferredResult.setResult(res);
         return;
     }
+    @Async
+    @Override
+    public void getMask(DeferredResult<Result<String>> deferredResult,long sessionId){
+        int operationCnt = executorPool.mask(sessionId);
+        if(operationCnt==-1){
+            deferredResult.setResult(new Result<>(ExceptionMsg.OutdatedSession));
+        }
 
+        MattingTask finishedTask = executorPool.getTask(sessionId);
+        while(finishedTask.getOperationCount()<operationCnt || (finishedTask.getOperationCount()==operationCnt && finishedTask.taskIsRunning()))
+        {
+            try{
+                Thread.yield();
+                Thread.sleep(10);}
+            catch (Exception e){
+                Result<String> res = new Result<>(ExceptionMsg.FAIL);
+                deferredResult.setResult(res);
+                return;
+            }
+            finishedTask = executorPool.getTask(sessionId);
+        }
+        Result<String> res = new Result<>();
+        res.setData(finishedTask.getCacheImage());
+        deferredResult.setResult(res);
+        return;
+    }
     public void updateState(String msg){
         MattingTask mattingTask = MattingTask.deserialized(msg);
         executorPool.renewTask(mattingTask);
