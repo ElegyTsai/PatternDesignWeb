@@ -70,4 +70,22 @@ public class MyExecutorPoolTest {
         System.out.println(mattingTask2.serialized());
 //        System.out.println(JsonStringUtil.<List<Integer>>getJsonFromArray(clicks));
     }
+    @Test
+    public void test4() throws Exception{
+        MattingTask mattingTask = new MattingTask(1L);
+        mattingTask.taskInitialize();
+        //任务初始化
+        mattingTask.addClicks(1,2,true);
+        //添加add
+        mattingTask.undo();
+        //撤销
+        mattingTask.taskRedo();
+        //redo操作， 指初始化+将click列表里的内容依次add
+        System.out.println(mattingTask.serialized());
+        List<List<Integer>> clicks = new ArrayList<>();
+        clicks = mattingTask.getClicks();
+        MattingTask mattingTask2 = MattingTask.deserialized(mattingTask.serialized());
+        System.out.println(mattingTask2.serialized());
+//        System.out.println(JsonStringUtil.<List<Integer>>getJsonFromArray(clicks));
+    }
 }

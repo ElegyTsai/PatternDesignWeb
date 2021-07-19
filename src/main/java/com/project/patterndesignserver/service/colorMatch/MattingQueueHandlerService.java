@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-@RabbitListener(queues = "matting.receiver")
+
 public class MattingQueueHandlerService {
     @Autowired
     MattingService mattingService;
+
+    @RabbitListener(queues = "matting.receiver")
     @RabbitHandler
     public void updateFeedback(String msg){
         mattingService.updateState(msg);

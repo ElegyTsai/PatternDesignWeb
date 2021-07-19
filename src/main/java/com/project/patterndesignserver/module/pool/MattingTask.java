@@ -19,8 +19,6 @@ public class MattingTask {
     private String status;
     private int operationCount;
 
-
-
     private List<List<Integer>> clicks = new ArrayList<>();
     private byte[] cacheImage;
     private String operation;
