@@ -5,11 +5,11 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class InitApplicationRunner implements ApplicationRunner {
-    @Value("${python.Matting}")
+    @Value("${python.matting.file}")
     String pythonFile;
-    @Value("${python.runner}")
+    @Value("${python.matting.runner}")
     String pythonRunner;
     @Override
     public void run(ApplicationArguments applicationArguments) throws Exception {
@@ -18,6 +18,7 @@ public class InitApplicationRunner implements ApplicationRunner {
             public void run() {
                 String[] args = new String[]{pythonRunner, pythonFile};
                 try {
+                    System.out.println("Python服务器开始运行");
                     Process process = Runtime.getRuntime().exec(args);
                     process.waitFor();
                 }
@@ -26,6 +27,7 @@ public class InitApplicationRunner implements ApplicationRunner {
                 }
             }
         });
-        System.out.println("初始化完成：InitApplicationRunner");
+//        thread.start();
+        System.out.println("python服务器初始化完成：InitApplicationRunner");
     }
 }
