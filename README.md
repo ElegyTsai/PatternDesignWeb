@@ -1,15 +1,36 @@
 # PatternDesignWeb     
 
-## 接口文档介绍     
+## 所用技术栈
+* Spring boot
+* Redis
+* RabbitMQ
+* MySQL  
+* MyBatis
+* [vue前端](https://github.com/KerrahChan/yanhaiwenzhou)  
+  
+## 项目构成
+### 1.依赖于Spring Security的用户验证与管理
+* 完成RBAC权限模型下的用户管理框架
+* 完善的用户管理和权限设置接口
+* 支持以邮箱或手机号进行登陆与注册
+* 以JWT形式对状态进行记录和验证
 
-### 注册接口         
-接口文档见/doc/api_doc    
-  
-### 登陆接口
-* url /api/login/process
-* method post
-* param: uname 用户名或者手机号   password  密码    isRememberMe: 是否记住我，可以延长token的有效时间
-* return  失败时 rspCode rspMsg ,失败原因有三种。密码错误，用户名没注册，用户被锁定。 成功时 多一个用户名和token
-![postman范例](.README_images/dcfb6a08.png)        
-  ![错误返回](.README_images/a2a09274.png)
-  
+### 2.素材管理
+* 提供文件服务器的重复性验证，减少服务器硬盘占用
+* Redis和MySQL实现素材的使用记录和热点排序
+* 支持素材标签的与检索和或检索
+
+### 3.Python提供的深度学习接口耦合
+* 以模型运算量为界限，设计了两套独立的进程通讯方式
+* 对高计算量模型设计了分布式模型消费者，为系统提供一定拓展性
+* 通过RabbitMQ设计了RPC调用，实现后端服务器和计算服务器的分离
+* 实现了线程安全的二级用户状态池对计算资源和用户状态进行管理
+* 参考分库分表实现了服务器端对计算服务器的负载均衡
+
+## 项目亮点
+* 完整易懂的swagger2接口文档 
+* 按照git workflow标准对项目版本进行管理
+* 单元测试覆盖率达到80%以上
+* 多处设计考虑高并发
+* 参考设计模式提供了高代码复用性
+* 高计算模型耦合模块可作为单独的耦合框架使用
