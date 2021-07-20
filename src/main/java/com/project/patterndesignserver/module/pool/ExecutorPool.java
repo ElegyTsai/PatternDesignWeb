@@ -148,8 +148,6 @@ public class ExecutorPool {
         LRUQueue.add(mattingTask);
         int ret = mattingTask.getOperationCount();
         writeLock.unlock();
-        if(!mattingTask.mask()) return -1;
-        // false表示失败
         rabbitmqTemplate.convertAndSend("mattingExchange","handler.1",mattingTask.serialized());
         return ret;
     }
