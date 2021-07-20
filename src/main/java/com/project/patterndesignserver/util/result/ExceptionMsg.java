@@ -20,7 +20,8 @@ public enum ExceptionMsg {
     UploadFailed("4101","上传失败"),
     SuffixError("4102","文件格式错误"),
     ServerBusy("4103","服务器繁忙，稍后重试"),
-    OutdatedSession("4104","页面已经过期，请重新开始")
+    OutdatedSession("4104","页面已经过期，请重新开始"),
+    UndoError("4105","撤销失败")
     ;
     private String code;
     private String msg;

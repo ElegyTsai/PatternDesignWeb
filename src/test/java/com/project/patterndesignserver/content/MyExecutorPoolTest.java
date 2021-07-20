@@ -3,13 +3,18 @@ package com.project.patterndesignserver.content;
 import com.google.gson.JsonObject;
 import com.project.patterndesignserver.module.pool.ExecutorPool;
 import com.project.patterndesignserver.module.pool.MattingTask;
+import com.project.patterndesignserver.util.ImageUtil;
 import com.project.patterndesignserver.util.JsonStringUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,15 +82,27 @@ public class MyExecutorPoolTest {
         //任务初始化
         mattingTask.addClicks(1,2,true);
         //添加add
-        mattingTask.undo();
+//        mattingTask.undo();
         //撤销
-        mattingTask.taskRedo();
+//        mattingTask.taskRedo();
         //redo操作， 指初始化+将click列表里的内容依次add
+        mattingTask.taskFinalize();
         System.out.println(mattingTask.serialized());
         List<List<Integer>> clicks = new ArrayList<>();
         clicks = mattingTask.getClicks();
         MattingTask mattingTask2 = MattingTask.deserialized(mattingTask.serialized());
         System.out.println(mattingTask2.serialized());
 //        System.out.println(JsonStringUtil.<List<Integer>>getJsonFromArray(clicks));
+    }
+    @Test
+    public void test5() throws  Exception{
+        File file = new File("/Users/elegy/Downloads/IMG_1367.JPG");
+        try {
+            FileInputStream fileInputStream = new FileInputStream(file);
+            MultipartFile multipartFile = new MockMultipartFile("pic", file.getName(), "png", fileInputStream);
+            ImageUtil.saveWithRandomName(multipartFile,"/Users/elegy/Desktop/Data/cache/");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
