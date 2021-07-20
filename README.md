@@ -6,7 +6,7 @@
 * RabbitMQ
 * MySQL  
 * MyBatis
-* [vue前端](https://github.com/KerrahChan/yanhaiwenzhou)  
+* vue[前端Git](https://github.com/KerrahChan/yanhaiwenzhou)  
   
 ## 项目构成
 ### 1.依赖于Spring Security的用户验证与管理
@@ -34,3 +34,4 @@
 * 多处设计考虑高并发
 * 参考设计模式提供了高代码复用性
 * 高计算模型耦合模块可作为单独的耦合框架使用
+* 静态工厂类包装完善，可以重复使用于不同项目
