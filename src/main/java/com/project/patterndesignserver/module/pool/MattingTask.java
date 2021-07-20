@@ -7,6 +7,7 @@ import com.project.patterndesignserver.util.UUIDUtil;
 import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,7 @@ public class MattingTask {
     public MattingTask(MultipartFile file, String path) throws IOException,Exception{
         this.fileName = ImageUtil.saveWithRandomName(file, path);
         this.createTime = System.currentTimeMillis();
+        this.cacheImage = ImageUtil.readImage(this.fileName);
         updateTimeNow();
         sessionId = UUIDUtil.getUUIDOfNumber();
         setStatusAsActive();
@@ -103,7 +105,6 @@ public class MattingTask {
     public boolean taskInitialize(){
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("operation","initialize");
-//        jsonObject.addProperty("clicks",JsonStringUtil.getJsonFromArray(List<>));
         this.operation = jsonObject.toString();
         setStatusAsActive();
         return true;
@@ -123,9 +124,9 @@ public class MattingTask {
         return true;
     }
     public boolean taskReset(){
-        this.taskInitialize();
         this.operationCount++;
         this.clicks.clear();
+        this.taskInitialize();
         return true;
     }
 

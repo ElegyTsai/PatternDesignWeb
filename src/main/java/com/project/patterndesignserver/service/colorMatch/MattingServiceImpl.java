@@ -2,6 +2,7 @@ package com.project.patterndesignserver.service.colorMatch;
 
 import com.project.patterndesignserver.module.pool.ExecutorPool;
 import com.project.patterndesignserver.module.pool.MattingTask;
+import com.project.patterndesignserver.util.ImageUtil;
 import com.project.patterndesignserver.util.result.ExceptionMsg;
 import com.project.patterndesignserver.util.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +32,13 @@ public class MattingServiceImpl implements MattingService{
             System.out.println(mattingTask.getFileName());
         }
         catch (IOException ioException){
+            ioException.printStackTrace();
             Result<Long> res = new Result<>(ExceptionMsg.SuffixError);
             deferredResult.setResult(res);
             return;
         }
         catch (Exception e) {
+            e.printStackTrace();
             Result<Long> res = new Result<>(ExceptionMsg.FAIL);
             deferredResult.setResult(res);
             return;
@@ -125,25 +128,9 @@ public class MattingServiceImpl implements MattingService{
     @Override
     public void reset(DeferredResult<Result<String>> deferredResult,long sessionId){
         int operationCnt = executorPool.reset(sessionId);
-        if(operationCnt==-1){
-            deferredResult.setResult(new Result<>(ExceptionMsg.OutdatedSession));
-        }
-
         MattingTask finishedTask = executorPool.getTask(sessionId);
-        while(finishedTask.getOperationCount()<operationCnt || (finishedTask.getOperationCount()==operationCnt && finishedTask.taskIsRunning()))
-        {
-            try{
-                Thread.yield();
-                Thread.sleep(10);}
-            catch (Exception e){
-                Result<String> res = new Result<>(ExceptionMsg.FAIL);
-                deferredResult.setResult(res);
-                return;
-            }
-            finishedTask = executorPool.getTask(sessionId);
-        }
         Result<String> res = new Result<>();
-        res.setData(finishedTask.getCacheImage());
+        res.setData(ImageUtil.readImage(finishedTask.getFileName()));
         deferredResult.setResult(res);
         return;
     }

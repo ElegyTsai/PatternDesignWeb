@@ -143,6 +143,7 @@ public class ExecutorPool {
         if(mattingTask==null) return -1;
         writeLock.lock();
         mattingTask.updateTimeNow();
+        mattingTask.mask();
         LRUQueue.remove(mattingTask);
         LRUQueue.add(mattingTask);
         int ret = mattingTask.getOperationCount();
