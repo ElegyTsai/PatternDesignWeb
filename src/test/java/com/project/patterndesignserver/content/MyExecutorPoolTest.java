@@ -3,6 +3,7 @@ package com.project.patterndesignserver.content;
 import com.google.gson.JsonObject;
 import com.project.patterndesignserver.module.pool.ExecutorPool;
 import com.project.patterndesignserver.module.pool.MattingTask;
+import com.project.patterndesignserver.service.colorMatch.MattingService;
 import com.project.patterndesignserver.util.ImageUtil;
 import com.project.patterndesignserver.util.JsonStringUtil;
 import org.junit.Test;
@@ -24,6 +25,9 @@ import java.util.List;
 public class MyExecutorPoolTest {
 
     volatile ExecutorPool executorPool = new ExecutorPool();
+
+    @Autowired
+    MattingService mattingService;
 
     @Test
     public void Test1()throws Exception, IOException {
@@ -104,5 +108,10 @@ public class MyExecutorPoolTest {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void test6(){
+
     }
 }
