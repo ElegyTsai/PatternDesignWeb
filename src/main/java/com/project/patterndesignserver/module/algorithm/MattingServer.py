@@ -25,10 +25,11 @@ def main():
 
     def callback(ch, method, properties, body):
         data = json.loads(body)
+        operation = json.loads(data['operation'])
         sessionId = int(data["sessionId"])
-        print(data["fileName"])
+        #print(data["fileName"])
         aQueue = threadPool.get(sessionId)
-        if(aQueue is None):
+        if(aQueue is None ):
             que = queue.Queue()
             threadPool[sessionId] = que
             que.put(body)
@@ -36,6 +37,10 @@ def main():
             t.start()
         else:
             aQueue.put(body)
+            if operation['operation'] == 'finalize':
+                threadPool.pop(int(data["sessionId"]))
+                #释放线程
+
         # print(body)
         print(data["operation"])
 
@@ -47,6 +52,7 @@ def main():
 
 
 def process(q,connection):
+
     args = parse_args()
 
     torch.backends.cudnn.deterministic = True
@@ -87,8 +93,8 @@ def process(q,connection):
                 controller.set_image(image)
                 data['status'] = 'waiting'
                 clicks = data['clicks']
-                for i in len(clicks):
-                    controller.add_click(clicks[0], clicks[1], clicks[2] == 1)
+                for i in clicks:
+                    controller.add_click(i[0], i[1], i[2] == 1)
                 vis = controller.get_visualization(0.50)
                 data['cacheImage'] = image_to_base64(vis)
                 print(data['cacheImage'])
@@ -105,12 +111,13 @@ def process(q,connection):
             connection2 = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
             channel2 = connection2.channel()
             newBody = json.dumps(data)
-            print(newBody)
+            print(data['operation'])
             channel2.basic_publish(exchange='',routing_key="matting.receiver",body=newBody)
 
         else:
             sleep(0.01)
             # print('Queue is empty.')
+
 
     # # 保存mask
     # mask = controller.result_mask

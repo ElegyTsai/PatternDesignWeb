@@ -12,10 +12,11 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @Component
 public class ExecutorPool {
-    @Value("${python.mattingPool.workThread}")
-    private int maxWorkThread;
-    @Value("${python.mattingPool.waitThread}")
-    private int maxWaitThread;
+    private int maxWorkThread = 1;
+    private int maxWaitThread = 10;
+    private int pySever = 1;
+    private String routineKeyPrefix = "handler.";
+    private String exchangeKey = "mattingExchange";
 
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     private final Lock readLock = lock.readLock();
@@ -30,12 +31,15 @@ public class ExecutorPool {
             return o1.getLastUpdateTime()< o2.getLastUpdateTime()? 1: -1;
         }
     });
-
     @Autowired
     private AmqpTemplate rabbitmqTemplate;
 
     public ExecutorPool(){
         waitPool= new WaitPool(maxWaitThread);
+    }
+    private String loadBalance(long sessionId){
+        int serverNo = (int)(sessionId%pySever) + 1;
+        return routineKeyPrefix+serverNo;
     }
 
     public boolean renewTask(MattingTask mattingTask){
@@ -44,6 +48,7 @@ public class ExecutorPool {
         oldTask.setStatusAsActive();
         oldTask.setCacheImage(mattingTask.getCacheImage());
         oldTask.updateTimeNow();
+        oldTask.setOperationCount(mattingTask.getOperationCount());
         LRUQueue.remove(oldTask);
         LRUQueue.add(oldTask);
         writeLock.unlock();
@@ -54,7 +59,7 @@ public class ExecutorPool {
      */
     public void initializeToMQ(MattingTask mattingTask){
         mattingTask.taskInitialize();
-        rabbitmqTemplate.convertAndSend("mattingExchange","handler.1",mattingTask.serialized());
+        rabbitmqTemplate.convertAndSend(exchangeKey,loadBalance(mattingTask.getSessionId()),mattingTask.serialized());
     }
 
     public MattingTask getTask(long sessionId){
@@ -73,7 +78,7 @@ public class ExecutorPool {
                 addIntoPool(task);
                 task.taskRedo();
                 writeLock.unlock();
-                rabbitmqTemplate.convertAndSend("mattingExchange","handler.1",task.serialized());
+                rabbitmqTemplate.convertAndSend(exchangeKey,loadBalance(task.getSessionId()),task.serialized());
             }
         }
 
@@ -121,7 +126,7 @@ public class ExecutorPool {
         mattingTask.addClicks(x, y, mouse);
         int ret = mattingTask.getOperationCount();
         writeLock.unlock();
-        rabbitmqTemplate.convertAndSend("mattingExchange","handler.1",mattingTask.serialized());
+        rabbitmqTemplate.convertAndSend(exchangeKey,loadBalance(mattingTask.getSessionId()),mattingTask.serialized());
         return ret;
     }
     public int undo(long sessionId){
@@ -135,7 +140,7 @@ public class ExecutorPool {
         int ret =mattingTask.getOperationCount();
         writeLock.unlock();
         // false表示撤销失败，click为空
-        rabbitmqTemplate.convertAndSend("mattingExchange","handler.1",mattingTask.serialized());
+        rabbitmqTemplate.convertAndSend(exchangeKey,loadBalance(mattingTask.getSessionId()),mattingTask.serialized());
         return ret;
     }
     public int mask(long sessionId){
@@ -148,7 +153,7 @@ public class ExecutorPool {
         LRUQueue.add(mattingTask);
         int ret = mattingTask.getOperationCount();
         writeLock.unlock();
-        rabbitmqTemplate.convertAndSend("mattingExchange","handler.1",mattingTask.serialized());
+        rabbitmqTemplate.convertAndSend(exchangeKey,loadBalance(mattingTask.getSessionId()),mattingTask.serialized());
         return ret;
     }
 
@@ -158,9 +163,10 @@ public class ExecutorPool {
         mattingTask.setStatusAsPending();
         if(taskPool.getOrDefault(mattingTask.getSessionId(),null)!=null){
             taskPool.remove(mattingTask.getSessionId());
+            mattingTask.taskFinalize();
             waitPool.addIntoWaitPool(mattingTask);
             writeLock.unlock();
-            //还需要一个队列通讯
+            rabbitmqTemplate.convertAndSend(exchangeKey,loadBalance(mattingTask.getSessionId()),mattingTask.serialized());
             return 1;
         }
         writeLock.unlock();
