@@ -104,7 +104,11 @@ def process(q,connection):
                 if mask.max() < 256:
                     mask = mask.astype(np.uint8)
                     mask *= 255 // mask.max()
-                data['cacheImage'] = save_mask(mask)
+                image = cv2.imread(data['fileName'])
+                masked = cv2.add(image, np.zeros(np.shape(image), dtype=np.uint8), mask=mask)
+                b_channel, g_channel, r_channel = cv2.split(masked)
+                img = cv2.merge((b_channel, g_channel, r_channel, mask))
+                data['cacheImage'] = save_mask(img)
                 data['status'] = 'waiting'
             elif operation['operation'] == 'finalize':
                 return
