@@ -14,7 +14,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public class ExecutorPool {
     private int maxWorkThread = 1;
     private int maxWaitThread = 10;
-    private int pySever = 1;
+    private int pySever = 2;
     private String routineKeyPrefix = "handler.";
     private String exchangeKey = "mattingExchange";
 
