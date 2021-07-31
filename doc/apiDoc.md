@@ -19,7 +19,9 @@
 
 ### 标签
 
+* color-matching-controller : Color Matching Controller
 * latest-used-material-controller : Latest Used Material Controller
+* matting-controller : Matting Controller
 * public-template-controller : Public Template Controller
 * user-controller : User Controller
 * user-image-controller : User Image Controller
@@ -30,6 +32,11 @@
 
 <a name="paths"></a>
 ## 资源
+
+<a name="color-matching-controller_resource"></a>
+### Color-matching-controller
+Color Matching Controller
+
 
 <a name="latest-used-material-controller_resource"></a>
 ### Latest-used-material-controller
@@ -202,6 +209,11 @@ GET /api/material/log/save
 ```
 
 
+<a name="matting-controller_resource"></a>
+### Matting-controller
+Matting Controller
+
+
 <a name="public-template-controller_resource"></a>
 ### Public-template-controller
 Public Template Controller
@@ -266,7 +278,7 @@ GET /api/template/getNail/{tag}/{fileName}
 
 
 ##### 说明
-get方法，获取模板的缩略图
+【目前这个方法已经被废弃 】get方法，获取模板的缩略图
 
 
 ##### 参数
@@ -318,7 +330,7 @@ GET /api/template/queryByTag
 
 
 ##### 说明
-get方法，用于查找种类下的模板返回信息为模板List，里面有jsonurl和缩略图url
+【目前这个方法已经被废弃 】get方法，用于查找种类下的模板返回信息为模板List，里面有jsonurl和缩略图url
 
 
 ##### 参数
@@ -373,7 +385,7 @@ json :
 ```
 
 
-<a name="uploadusingpost_1"></a>
+<a name="uploadusingpost_2"></a>
 #### 上传模板
 ```
 POST /api/template/upload
@@ -681,7 +693,7 @@ GET /api/home/test
 
 |HTTP代码|说明|类型|
 |---|---|---|
-|**200**|OK|enum (FAIL, SUCCESS, UserNotFound, UsernameNotFound, UsernameUsed, PhoneUsed, CodeError, UserNotAuthenticated, EmailUsed, EmailError, TimeOut, PasswordError, UserNotExisted, UserDisabled, KeyWrong, LackInfo, UploadFailed, SuffixError)|
+|**200**|OK|enum (FAIL, SUCCESS, UserNotFound, UsernameNotFound, UsernameUsed, PhoneUsed, CodeError, UserNotAuthenticated, EmailUsed, EmailError, TimeOut, PasswordError, UserNotExisted, UserDisabled, KeyWrong, LackInfo, UploadFailed, SuffixError, ServerBusy, OutdatedSession, UndoError)|
 |**401**|Unauthorized|无内容|
 |**403**|Forbidden|无内容|
 |**404**|Not Found|无内容|
@@ -906,7 +918,7 @@ json :
 ```
 
 
-<a name="uploadusingpost_2"></a>
+<a name="uploadusingpost_3"></a>
 #### upload
 ```
 POST /api/img/user/upload
@@ -1042,7 +1054,7 @@ GET /api/img/public/getImage/{tag}/{url}
 
 
 ##### 说明
-get方法，需要tag和图片的UUID用byte数组传递图片
+【目前这个方法已经被废弃 】get方法，需要tag和图片的UUID用byte数组传递图片
 
 
 ##### 参数
@@ -1094,7 +1106,7 @@ GET /api/img/public/getNail/{tag}/{url}
 
 
 ##### 说明
-get方法，需要tag和图片的UUID用byte数组传递图片
+【目前这个方法已经被废弃 】get方法，需要tag和图片的UUID用byte数组传递图片
 
 
 ##### 参数
@@ -1198,7 +1210,7 @@ json :
 ```
 
 
-<a name="uploadusingpost"></a>
+<a name="uploadusingpost_1"></a>
 #### 上传图片到公共素材库
 ```
 POST /api/img/public/upload
@@ -1282,6 +1294,24 @@ json :
 <a name="definitions"></a>
 ## 定义
 
+<a name="c2f3942ef35cdf6579843f5971950af6"></a>
+### DeferredResult«Result«long»»
+
+|名称|说明|类型|
+|---|---|---|
+|**result**  <br>*可选*|**样例** : `"object"`|object|
+|**setOrExpired**  <br>*可选*|**样例** : `true`|boolean|
+
+
+<a name="fb568bb5434729714511c56596e3111e"></a>
+### DeferredResult«Result«string»»
+
+|名称|说明|类型|
+|---|---|---|
+|**result**  <br>*可选*|**样例** : `"object"`|object|
+|**setOrExpired**  <br>*可选*|**样例** : `true`|boolean|
+
+
 <a name="publicimageresult"></a>
 ### PublicImageResult
 
@@ -1339,6 +1369,16 @@ json :
 |---|---|---|
 |**code**  <br>*可选*|**样例** : `"string"`|string|
 |**data**  <br>*可选*|**样例** : `"[publictemplate](#publictemplate)"`|[PublicTemplate](#publictemplate)|
+|**msg**  <br>*可选*|**样例** : `"string"`|string|
+
+
+<a name="c5e8d1d11ddb429572042cb1fe53c7a5"></a>
+### Result«long»
+
+|名称|说明|类型|
+|---|---|---|
+|**code**  <br>*可选*|**样例** : `"string"`|string|
+|**data**  <br>*可选*|**样例** : `0`|integer (int64)|
 |**msg**  <br>*可选*|**样例** : `"string"`|string|
 
 

@@ -18,7 +18,10 @@ public enum ExceptionMsg {
     KeyWrong("4013","签名错误"),
     LackInfo("4020","登陆信息缺失"),
     UploadFailed("4101","上传失败"),
-    SuffixError("4102","文件格式错误")
+    SuffixError("4102","文件格式错误"),
+    ServerBusy("4103","服务器繁忙，稍后重试"),
+    OutdatedSession("4104","页面已经过期，请重新开始"),
+    UndoError("4105","撤销失败")
     ;
     private String code;
     private String msg;
