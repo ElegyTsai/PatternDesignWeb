@@ -50,6 +50,7 @@ public class SysImageServiceImpl extends BaseController implements SysImageServi
         image.setTag(tag);
         image.setPermission(permission);
         String newPath = path+tag+separator;
+        String relativePath = tag + separator;
         String newFileName = UUID.randomUUID().toString().replace("-","")+suffix;
 
         try{
@@ -61,7 +62,7 @@ public class SysImageServiceImpl extends BaseController implements SysImageServi
                 }
             }
 
-            image.setImagePath(newPath+newFileName);
+            image.setImagePath(relativePath+newFileName);
             multipartFile.transferTo(file);
 //            System.out.println(newFileName);
 //            System.out.println(newPath);
@@ -71,7 +72,7 @@ public class SysImageServiceImpl extends BaseController implements SysImageServi
 
             image.setImageName(newFileName);
             image.setAvailable(true);
-            image.setThumbnailPath(newPath+nailUrlPrefix+newFileName);
+            image.setThumbnailPath(relativePath+nailUrlPrefix+newFileName);
 
             publicImageMapper.addImage(image);
 
