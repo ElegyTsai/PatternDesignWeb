@@ -192,12 +192,12 @@
             <scope>compile</scope>
         </dependency>
 
-        <dependency>
-            <groupId>nl.jworks.markdown_to_asciidoc</groupId>
-            <artifactId>markdown_to_asciidoc</artifactId>
-            <version>1.0</version>
-            <scope>compile</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>nl.jworks.markdown_to_asciidoc</groupId>-->
+<!--            <artifactId>markdown_to_asciidoc</artifactId>-->
+<!--            <version>1.0</version>-->
+<!--            <scope>compile</scope>-->
+<!--        </dependency>-->
         <!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
         <dependency>
             <groupId>commons-beanutils</groupId>
