@@ -63,9 +63,9 @@ public class ColorMatchingServiceImpl implements ColorMatchingService{
             BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line = null;
             int re = process.waitFor();
-            while ((line = in.readLine()) != null) {
-                System.out.println(line);
-            }
+//            while ((line = in.readLine()) != null) {
+//                System.out.println(line);
+//            }
             in.close();
             if (re == 1) {
                 //System.out.println("调用脚本失败");
