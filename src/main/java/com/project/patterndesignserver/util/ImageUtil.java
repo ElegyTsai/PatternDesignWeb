@@ -18,7 +18,7 @@ public class ImageUtil {
     public static String saveWithRandomName(MultipartFile multipartFile,String path) throws IOException,Exception {
         String originalName = multipartFile.getOriginalFilename();
         String suffix =originalName.substring(originalName.lastIndexOf(".")).toLowerCase();
-        if(!suffix.equals(".png") && !suffix.equals(".jpg")){
+        if(!suffix.equals(".png") && !suffix.equals(".jpg") && suffix.equals(".jpeg")){
             throw new Exception("unsupported file type");
         }
         String newFileName = UUID.randomUUID().toString().replace("-","")+suffix;

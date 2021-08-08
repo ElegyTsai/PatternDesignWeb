@@ -14,16 +14,16 @@ public class RedisTest {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
     @Autowired
-    private RedisTemplate redisTemplate;
+//    private RedisTemplate redisTemplate;
 
     @Test
     public void test1(){
-        redisTemplate.opsForValue().set("key","value1");
+//        redisTemplate.opsForValue().set("key","value1");
 
     }
     @Test
     public void test2(){
-        Object s =redisTemplate.opsForValue().get("key");
-        System.out.println(s);
+//        Object s =redisTemplate.opsForValue().get("key");
+//        System.out.println(s);
     }
 }

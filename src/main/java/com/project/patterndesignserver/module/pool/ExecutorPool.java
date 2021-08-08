@@ -12,9 +12,9 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @Component
 public class ExecutorPool {
-    private int maxWorkThread = 1;
-    private int maxWaitThread = 10;
-    private int pySever = 2;
+    private final int maxWorkThread = 10;
+    private final int maxWaitThread = 100;
+    private final int pySever = 1;
     private String routineKeyPrefix = "handler.";
     private String exchangeKey = "mattingExchange";
 
