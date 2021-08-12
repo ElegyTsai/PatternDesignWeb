@@ -1,4 +1,6 @@
 # PatternDesignWeb     
+项目简介：利用自主设计的CV算法实现图案花纹的智能设计，风格生成和素材编辑，将这些算法进行落地。提供一个可以在线排版设计的网站，实现AI赋能和商业化变现。
+![image](https://user-images.githubusercontent.com/38712230/128673201-330b846a-e39e-4ab5-ab35-a2ffa0e53b0d.png)
 
 ## 所用技术栈
 * Spring boot
@@ -6,7 +8,7 @@
 * RabbitMQ
 * MySQL  
 * MyBatis
-* vue[前端Git](https://github.com/KerrahChan/yanhaiwenzhou)  
+* vue   [前端Git](https://github.com/KerrahChan/yanhaiwenzhou)  
   
 ## 项目构成
 ### 1.依赖于Spring Security的用户验证与管理
