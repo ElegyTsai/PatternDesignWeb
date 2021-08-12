@@ -161,7 +161,8 @@ class InteractiveController:
         self.image = None
         self.predictor = None
         self.device = device
-        self.predictor_params = predictor_params
+#         self.predictor_params = predictor_params
+        self.predictor_params = {'brs_mode': 'NoBRS', 'prob_thresh': 0.5, 'zoom_in_params': {'skip_clicks': -1, 'target_size': (400, 400), 'expansion_ratio': 1.4}, 'predictor_params': {'net_clicks_limit': None, 'max_size': 800}, 'brs_opt_func_params': {'min_iou_diff': 0.001}, 'lbfgs_params': {'maxfun': 20}}
         self.reset_predictor()
 
     def set_image(self, image):
